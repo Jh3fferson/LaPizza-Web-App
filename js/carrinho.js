@@ -105,9 +105,9 @@ function configurarEventosCarrinho() {
     } else {
       app.dialog.confirm("Deseja excluir este item?", "Excluir", function () {
         carrinho.splice(index, 1);
+        atualizarTotais();
       });
     }
-    atualizarTotais();
   });
 
   $(".mais").off("click").on("click", function () {
