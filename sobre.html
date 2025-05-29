@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <!-- Required meta tags-->
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, viewport-fit=cover"
+    />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <!-- Color theme for statusbar (Android only) -->
+    <meta name="theme-color" content="#2196f3" />
+    <!-- Your app title -->
+    <title>My App</title>
+    <!-- Path to Framework7 Library Bundle CSS -->
+    <link rel="stylesheet" href="lib/framework7-bundle.min.css" />
+    <!-- CSS PERSONALIZADO PARA MENU-->
+    <link rel="stylesheet" href="css/about.css" />
+    <!--Ícones Material Design-->
+    <link rel="stylesheet" href="css/boxicons/boxicons.css" />
+  </head>
+
+  <body>
+    <!-- App root element -->
+    <div id="app">
+      <!-- Your main view, should have "view-main" class -->
+      <div class="view view-main">
+        <!-- Initial Page, "data-name" contains page name -->
+        <div data-name="link2" class="page">
+          <!-- Top Navbar -->
+          <div class="navbar navbar-sobre">
+            <div class="nav-background">
+              <div class="navbar-bg"></div>
+              <div class="navbar-inner justify-content-center barra-titulo">
+                <img src="img/lapizza.png" />
+                <h1 class="title">Sobre Nós</h1>
+              </div>
+            </div>
+          </div>
+
+          <!-- Scrollable page content -->
+          <div class="page-content page-sobre-content">
+            <div class="missoes">
+              <div class="missao">
+                <h2 class="missao-titulo">Nossa Missão</h2>
+                <p class="line-missao"></p>
+                <span
+                  >Oferecer pizzas deliciosas e autênticas, preparadas com
+                  ingredientes frescos e selecionados, proporcionando momentos
+                  de sabor e alegria para nossos clientes, amigos e famílias, em
+                  um ambiente acolhedor ou no conforto de seus lares.</span
+                >
+              </div>
+              <div class="missao">
+                <h2 class="missao-titulo">Nossa Visão</h2>
+                <p class="line-missao"></p>
+                <span
+                  >Ser reconhecida como a pizzaria referência na região,
+                  admirada pela qualidade excepcional de nossas pizzas, pelo
+                  atendimento caloroso e pela inovação constante em nossos
+                  sabores e serviços, tornando-nos a primeira escolha para quem
+                  busca uma experiência gastronômica memorável.</span
+                >
+              </div>
+              <div class="missao">
+                <h2 class="missao-titulo">Nossos Valores</h2>
+                <p class="line-missao"></p>
+                <ul>
+                  <li>
+                    <b>Qualidade:</b
+                    ><span>
+                      Utilizamos apenas os melhores ingredientes, desde a massa
+                      artesanal até os recheios frescos, garantindo um sabor
+                      inigualável em cada fatia.</span
+                    >
+                  </li>
+                  <br>
+                  <li>
+                    <b>Paixão pelo Cliente: </b
+                    ><span>
+                      Colocamos nossos clientes em primeiro lugar, buscando
+                      superar suas expectativas com um atendimento atencioso,
+                      ágil e amigável.</span
+                    >
+                  </li>
+                  <br>
+                  <li>
+                    <b>Tradição e Inovação:</b
+                    ><span>
+                      Honramos as receitas tradicionais da pizza enquanto
+                      exploramos novas combinações de sabores e técnicas para
+                      surpreender e encantar nossos clientes.</span
+                    >
+                  </li>
+                </ul>
+              </div>
+              <div class="missao">
+                <h2 class="missao-titulo">Informações de Contato</h2>
+                <p class="line-missao"></p>
+                <p>
+                  <b class="destaque">Endereço: </b><span>Casa do Rafael</span>
+                </p>
+                <p><b class="destaque">Telefone: </b><span>4002-8922</span></p>
+                <p>
+                  <b class="destaque">Email: </b
+                  ><span>contato@lapizza.com.br</span>
+                </p>
+                <p>
+                  <b class="destaque">Website: </b
+                  ><span>www.lapizza.com.br</span>
+                </p>
+              </div>
+
+              <div class="missao missao-redes">
+                <h2 class="missao-redes-sociais">Rede Sociais</h2>
+                <div class="div-redes">
+                  <a id="link-redes" href="#"
+                    ><i id="icons-redes" class="bx bxl-instagram-alt"></i
+                    >Instagram</a
+                  >
+                  <a id="link-redes" href="#"
+                    ><i id="icons-redes" class="bx bxl-whatsapp-square"></i
+                    >whatsapp</a
+                  >
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Path to Framework7 Library Bundle JS-->
+    <script type="text/javascript" src="lib/framework7-bundle.min.js"></script>
+    <!-- jQuery -->
+    <script type="text/javascript" src="lib/jquery-3.7.0.min.js"></script>
+    <!-- Roteamento do app-->
+    <script type="text/javascript" src="js/routes.js"></script>
+    <script src="cordova.js"></script>
+  </body>
+</html>

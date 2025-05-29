@@ -1,0 +1,96 @@
+.nav-top-fav{
+    display: flex;
+    width: 100%;
+    align-items: center;
+    justify-content: space-between;
+    background-color: var(--begeAmarelado);
+    padding: 10px 20px;
+    color: var(--azul);
+}
+
+.nav-top-fav a{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border: 1px solid var(--bege);
+    border-radius: 50%;
+}
+
+.nav-top-fav a:first-child{
+    margin-left: 0px;
+}
+
+.nav-top-fav a:last-child{
+    margin-right: 30px;
+}
+
+
+.item-favorito{
+    display: flex;
+    align-items: center;
+    width: 90%;
+    height: 120px;
+    margin: auto;
+    border-bottom: 1px solid var(--bege);
+    padding: 10px 0px;
+    background-color: var(--begeAmarelado)
+}
+
+.img-favorito{
+    flex: 30%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--bege);
+    border-radius: 20px;
+}
+
+.area-favorito{
+    flex: 70%;
+    display: flex;
+    justify-content: center;
+    flex-flow: column wrap;
+    height: 100%;
+}
+
+.img-favorito img{
+    max-width: 120px;
+    height: 120px;
+    object-fit: contain;
+}
+
+.sup-fav{
+    width: 100%;
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: center;
+    justify-content: space-between ;
+    color: var(--azul); 
+}
+
+.nome-favorito{
+    font-weight: 600;
+    font-size: 20px;
+    margin-left: 15px;
+    max-width: 220px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.delete-favorito{
+    font-size: 25px;
+    color: red;
+    margin-right: 4%; 
+}
+
+.middle-fav{
+    margin-top: 15px;
+}
+
+.add-favorito-cart{
+    margin-left: 15px;
+}

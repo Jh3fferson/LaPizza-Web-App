@@ -1,0 +1,280 @@
+:root {
+  --bege: #fcecca;
+  --begeAmarelado: #fdeab89a;
+  --vermelho: #990505;
+  --preto: #2a2a2a;
+  --azul: #547aec;
+}
+
+@import url("https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap");
+
+body {
+  font-family: "Roboto", sans-serif;
+}
+.toolbar {
+  height: 80px;
+}
+
+.tab-link {
+  display: flex;
+  justify-content: center;
+  flex-flow: column wrap;
+}
+
+.toolbar-inner .link {
+  flex: 1;
+  height: 80px;
+  line-height: 25px;
+  font-weight: bold;
+  color: var(--vermelho);
+}
+
+.toolbar-inner .link:not(.active) {
+  color: var(--preto);
+  font-weight: normal;
+}
+
+.toolbar-inner .link i {
+  font-size: 28px;
+}
+
+.toolbar-inner {
+  background: var(--bege);
+  border-top: var(--bege);
+}
+
+.top-nav {
+  width: 100%;
+  height: 60px;
+  background-color: var(--vermelho);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.title-logo {
+  font-weight: 600;
+  margin-left: 5%;
+  color: var(--bege);
+}
+
+.btn-cart {
+  width: 40px;
+  height: 40px;
+  background: var(--begeAmarelado);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 5%;
+  border-radius: 50%;
+  border: 1px solid var(--bege);
+  font-size: 24px;
+  color: var(--preto);
+}
+
+.btn-cart::before {
+  content: attr(data-count);
+  background: var(--azul);
+  width: 17px;
+  height: 17px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  color: var(--begeAmarelado);
+  position: absolute;
+  top: 5px;
+  right: 0%;
+  margin-right: 5%;
+}
+
+.btn-cart[data-count="0"]::before {
+  display: none;
+}
+
+a {
+  color: var(--azul);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+form {
+  padding-top: 10px;
+  background: var(--begeAmarelado);
+  padding-bottom: 20px;
+  border: 1px solid var(--begeAmarelado);
+}
+
+#busca {
+  width: 90%;
+  height: 45px;
+  border-radius: 10px;
+  margin: auto;
+  padding: 10px 20px;
+  background-color: var(--bege);
+}
+
+::placeholder {
+  color: #b3afaf;
+}
+
+.icone-busca {
+  position: absolute;
+  top: 75px;
+  right: 5%;
+  font-size: 27px;
+  padding: 5px;
+}
+
+.page-content {
+  background-color: var(--bege);
+  padding-bottom: 300px;
+}
+.swiper {
+  width: 100%;
+  height: 100%;
+}
+
+.swiper-slide {
+  text-align: center;
+  font-size: 18px;
+  background-color: var(--bege);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 15px;
+}
+
+.swiper-slide img {
+  display: block;
+  width: 80%;
+  height: 90%;
+  object-fit: cover;
+  border-radius: 19%;
+}
+
+.img-fluid {
+  max-width: 100%;
+}
+
+.swiper-button-next,
+.swiper-button-prev {
+  color: var(--preto);
+}
+.block {
+  margin-left: 5%;
+  margin-right: 5%;
+}
+
+.filter-btn {
+  width: 220px;
+  height: 35px;
+  background-color: var(--bege);
+  border: 2px solid var(--preto);
+  border-radius: 10px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: rgb(54, 53, 53);
+  border-color: #929090;
+}
+
+.row {
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.img-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 180px;
+  border-radius: 10%;
+}
+
+.img-container img {
+  max-width: 150px;
+  object-fit: cover;
+}
+
+.item {
+  color: var(--preto);
+}
+.item-card {
+  margin: 15px;
+  background-color: var(--begeAmarelado);
+}
+.descricao {
+  font-size: 10px;
+  color: #b3afaf;
+  max-width: 300px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.nome-preco {
+  display: flex;
+  justify-content: space-between;
+  padding-top: 10px;
+}
+@media (min-width: 162px) {
+  .item-card {
+    flex: 70%;
+  }
+}
+
+@media (min-width: 370px) {
+  .item-card {
+    flex: 60%;
+  }
+}
+
+@media (min-width: 578px) {
+  .item-card {
+    flex: 50%;
+  }
+}
+
+@media (min-width: 786px) {
+  .item-card {
+    flex: 40%;
+  }
+}
+
+@media (min-width: 992px) {
+  .item-card {
+    flex: 30%;
+  }
+}
+
+@media (min-width: 1200px) {
+  .item-card {
+    flex: 20%;
+  }
+}
+
+.skeleton-block {
+  background-color: var(--bege) !important;
+}
+.skeleton-nome {
+  width: 90px;
+  margin-right: auto;
+}
+
+.skeleton-rating-star {
+  width: 20px;
+  margin-right: 15px;
+}
+
+.skeleton-rating-number {
+  width: 30px;
+  margin-right: 15px;
+}
+
+.skeleton-price {
+  margin-top: 5px;
+  height: 20px;
+  width: 60px;
+}

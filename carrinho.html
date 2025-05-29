@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+    <title>Carrinho La Pizza</title>
+
+    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="css/carrinho.css" />
+</head>
+
+<body>
+    <div id="app" class="page">
+        <div class="view view-main">
+            <header class="navbar">
+                <div class="navbar-inner">
+                    <div class="left">
+                        <a href="/index/" class="link">
+                            <i class="bx bxs-chevron-left"></i>
+                        </a>
+                    </div>
+                    <div class="title">Carrinho</div>
+                    <div class="right">
+                        <a class="link popover-open" data-popover=".popover-menu"> <i class='bx bx-dots-horizontal-rounded'></i></a>
+                    </div>
+                </div>
+            </header>
+            <div class="popover popover-menu">
+                <div class="popover-angle"></div>
+                <div class="popover-inner">
+                    <div class="list">
+                        <ul>
+                            <li><a id="esvaziar" href="#" class="list-button popover-close">
+                                    <i class='bx bxs-eraser'></i>esvaziar Carrinho
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!--TAB BAR VALORES-->
+            <div style="margin-bottom: 100px;" style="background: transparent!important;"
+                class="toolbar toolbar-bottom">
+                <div id="resumo-carrinho">
+                    <div>Total dos itens:
+                        <span id="total-itens">R$0,00</span>
+                    </div>
+                    <div>Frete:
+                        <span id="valor-frete">R$10,00</span>
+                    </div>
+                    <div style="margin-top:10px; font-weight:bold;">Total geral:
+                        <span id="total-geral">R$0,00</span>
+                    </div>
+                </div>
+            </div>
+
+            <main class="page-content">
+                <div id="lista-carrinho" class="list">
+                </div>
+            </main>
+        </div>
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <!-- Required meta tags-->
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, viewport-fit=cover"
+    />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <!-- Color theme for statusbar (Android only) -->
+    <meta name="theme-color" content="#2196f3" />
+    <!-- Your app title -->
+    <title>La Pizza</title>
+    <!-- Path to Framework7 Library Bundle CSS -->
+    <link rel="stylesheet" href="lib/framework7-bundle.min.css" />
+    <!-- CSS PERSONALIZADO PARA MENU-->
+    <link rel="stylesheet" href="css/detalhes.css" />
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/carrinho.css" />
+    <link rel="stylesheet" href="css/sobre.css" />
+    <link rel="stylesheet" href="css/login.css" />
+    <link rel="stylesheet" href="css/comprar.css" />
+
+    <!--Ícones Box Icons-->
+    <link rel="stylesheet" href="css/boxicons/boxicons.css" />
+  </head>
+
+  <body>
+    <!-- App root element -->
+    <div id="app">
+      <!-- Your main view, should have "view-main" class -->
+      <div class="view view-main">
+        <!-- TAB BAR-->
+        <div id="menuprincipal" class="toolbar toolbar-bottom">
+          <div class="toolbar-inner display-flex">
+            <a href="/index/" class="tab-link link active">
+              <i class="bx bxs-home"></i>
+              <span>Home</span>
+            </a>
+            <a href="/sobre/" class="tab-link link">
+              <i class="bx bxs-notepad"></i>
+              <span>Sobre</span>
+            </a>
+            <a href="/favoritos/" class="tab-link link">
+              <i class="bx bxs-heart favorito-toolbar"></i>
+              <span>Favoritos</span>
+            </a>
+            <a href="/login/" class="tab-link link">
+              <i class="bx bxs-user"></i>
+              <span>Usuário</span>
+            </a>
+          </div>
+        </div>
+
+        <!-- Initial Page, "data-name" contains page name -->
+        <div data-name="index" class="page color-theme-blue">
+          <!-- Top Nav -->
+          <div class="top-nav">
+            <h1 class="title-logo">LaPizza</h1>
+            <a href="/carrinho/" class="btn-cart" data-count="0">
+              <i class="bx bxs-cart-alt"></i>
+            </a>
+          </div>
+
+          <!-- Scrollable page content -->
+          <div class="page-content">
+            <div class="block no-margin-top">
+              <!-- Swiper -->
+              <div class="swiper mySwiper">
+                <div class="swiper-wrapper">
+                  <div class="swiper-slide">
+                    <img class="img-fluid" src="img/promopizza.png" />
+                  </div>
+                  <div class="swiper-slide">
+                    <img class="img-fluid" src="img/promoPizza2.webp" />
+                  </div>
+                  <div class="swiper-slide">
+                    <img class="img-fluid" src="img/Promopizza4.webp" />
+                  </div>
+                  <div class="swiper-slide">
+                    <img class="img-fluid" src="img/promoPizza.webp" />
+                  </div>
+                </div>
+              </div>
+              <div
+                class="display-flex alingn-items-center justify-content-space-between"
+              >
+                <h2>Categorias</h2>
+                <a href="#"> </a>
+              </div>
+
+              <!-- Swiper Categorias -->
+              <div class="swiper categorias">
+                <div class="swiper-wrapper">
+                  <div class="swiper-slide">
+                    <button class="filter-btn active" data-id="0">
+                      Cardápio
+                    </button>
+                  </div>
+                  <div class="swiper-slide">
+                    <button class="filter-btn active" data-id="1">
+                      Tradicional
+                    </button>
+                  </div>
+                  <div class="swiper-slide">
+                    <button class="filter-btn" data-id="2">Especial</button>
+                  </div>
+                  <div class="swiper-slide">
+                    <button class="filter-btn" data-id="3">Doces</button>
+                  </div>
+                  <div class="swiper-slide">
+                    <button class="filter-btn" data-id="4">Bebidas</button>
+                  </div>
+                </div>
+                <!--Cart de Produtos -->
+
+                <div
+                  id="produtos"
+                  class="margin-top row display-flex alingn-items-center justify-content-start"
+                ></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Path to Framework7 Library Bundle JS-->
+    <script type="text/javascript" src="lib/framework7-bundle.min.js"></script>
+    <!-- jQuery -->
+    <script type="text/javascript" src="lib/jquery-3.7.0.min.js"></script>
+    <!-- Roteamento do app-->
+    <script type="text/javascript" src="js/routes.js"></script>
+    <script src="cordova.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+    <script>
+      emailjs.init("5Jt7BvCgQZ4-DkuxO");
+    </script>
+  </body>
+</html>

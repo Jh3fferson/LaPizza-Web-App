@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <!-- Required meta tags-->
+  <meta charset="utf-8" />
+  <meta name="viewport"
+    content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, viewport-fit=cover" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <!-- Color theme for statusbar (Android only) -->
+  <meta name="theme-color" content="#2196f3" />
+  <!-- Your app title -->
+  <title>My App</title>
+  <!-- Path to Framework7 Library Bundle CSS -->
+  <link rel="stylesheet" href="lib/framework7-bundle.min.css" />
+  <!--Ícones Material Design-->
+  <link rel="stylesheet" href="css/materialdesignicons.min.css" />
+</head>
+
+<body>
+  <div id="app">
+    <div class="view view-main">
+      <div data-name="detalhes" class="page">
+        <!-- Navbar -->
+        <div class="toolbar toolbar-bottom">
+          <div class="toolbar-inner display-flex align-items-center justify-content-center">
+            <div class="flex-40 text-align-center">
+              <span id="price-details" class="line-through"></span>
+              <h3 id="promotional-price-details" class="pricing no-padding no-margin">
+                R$X.XXX,XX
+              </h3>
+            </div>
+            <div class="flex-60">
+              <button class="add-cart">Adicionar ao Carrinho</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="page-content pizza-detalhes-container">
+          <div class="prod-detail">
+            <!-- Botões superiores -->
+            <div class="buttons-top">
+              <a href="/index/">
+                <i class="bx bxs-chevron-left"></i>
+              </a>
+              <a href="#">
+                <i class="bx bx-bookmark-plus"></i>
+              </a>
+              <a href="#">
+                <i class="bx bx-share-alt"></i>
+              </a>
+            </div>
+            <img id="imagem-pizza" src="" />
+          </div>
+
+          <!-- Conteúdo -->
+          <div>
+            <h1 id="nome-pizza"></h1>
+
+            <div class="pizza-info">
+              <h2>Tamanho:</h2>
+              <div class="tamanhos">
+                <button class="tamanho-btn selected" data-tamanho="Pequena">
+                  Pequena
+                </button>
+                <button class="tamanho-btn" data-tamanho="Media">
+                  Média
+                </button>
+                <button class="tamanho-btn" data-tamanho="Grande">
+                  Grande
+                </button>
+                <button class="tamanho-btn" data-tamanho="Gigante">
+                  Gigante
+                </button>
+              </div>
+              <h2>Ingredientes:</h2>
+              <table id="lista-ingredientes"></table>
+              <h2>Extras:</h2>
+              <table id="lista-extras"></table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Framework7 & jQuery -->
+  <script src="lib/framework7-bundle.min.js"></script>
+  <script src="lib/jquery-3.7.0.min.js"></script>
+  <script src="js/routes.js"></script>
+  <script src="cordova.js"></script>
+</body>
+
+</html>

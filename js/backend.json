@@ -1,0 +1,656 @@
+{
+  "ingredientes": [
+    {
+      "id": 1,
+      "nome": "Mussarela",
+      "quantidade": 1,
+      "tipo": "laticínio",
+      "alergenico": true,
+      "preco": 1.0,
+      "fornecedor": {
+        "nome": "Laticínios Bella Vista",
+        "contato": "contato@bellavista.com.br"
+      }
+    },
+    {
+      "id": 2,
+      "nome": "Manjericão fresco",
+      "quantidade": 1,
+      "tipo": "erva",
+      "alergenico": false,
+      "preco": 5.0,
+      "fornecedor": {
+        "nome": "Hortas do Vale",
+        "contato": "hortas@valeverde.com"
+      }
+    },
+    {
+      "id": 3,
+      "nome": "Molho de tomate",
+      "quantidade": 1,
+      "tipo": "molho",
+      "alergenico": false,
+      "preco": 2.5,
+      "fornecedor": {
+        "nome": "Molhos Naturais LTDA",
+        "contato": "vendas@molhosnaturais.com.br"
+      }
+    },
+    {
+      "id": 4,
+      "nome": "Calabresa",
+      "quantidade": 1,
+      "tipo": "embutido",
+      "alergenico": false,
+      "preco": 3.5,
+      "fornecedor": {
+        "nome": "Salsicharia Sabor",
+        "contato": "contato@sabor.com"
+      }
+    },
+    {
+      "id": 5,
+      "nome": "Frango desfiado",
+      "quantidade": 1,
+      "tipo": "carne",
+      "alergenico": false,
+      "preco": 4.0,
+      "fornecedor": {
+        "nome": "Avícola Campos",
+        "contato": "vendas@avicola.com"
+      }
+    },
+    {
+      "id": 6,
+      "nome": "Catupiry",
+      "quantidade": 1,
+      "tipo": "laticínio",
+      "alergenico": true,
+      "preco": 2.0,
+      "fornecedor": {
+        "nome": "Laticínios Bella Vista",
+        "contato": "contato@bellavista.com.br"
+      }
+    },
+    {
+      "id": 7,
+      "nome": "Queijo provolone",
+      "quantidade": 1,
+      "tipo": "laticínio",
+      "alergenico": true,
+      "preco": 3.0,
+      "fornecedor": {
+        "nome": "Laticínios Bella Vista",
+        "contato": "contato@bellavista.com.br"
+      }
+    },
+    {
+      "id": 8,
+      "nome": "Camarão",
+      "quantidade": 1,
+      "tipo": "frutos do mar",
+      "alergenico": true,
+      "preco": 7.0,
+      "fornecedor": {
+        "nome": "Pesca Marítima",
+        "contato": "contato@pescamaritima.com"
+      }
+    },
+    {
+      "id": 9,
+      "nome": "Presunto",
+      "quantidade": 1,
+      "tipo": "embutido",
+      "alergenico": false,
+      "preco": 3.0,
+      "fornecedor": {
+        "nome": "Salsicharia Sabor",
+        "contato": "contato@sabor.com"
+      }
+    },
+    {
+      "id": 10,
+      "nome": "Cebola",
+      "quantidade": 1,
+      "tipo": "vegetal",
+      "alergenico": false,
+      "preco": 1.0,
+      "fornecedor": {
+        "nome": "Hortas do Vale",
+        "contato": "hortas@valeverde.com"
+      }
+    },
+    {
+      "id": 11,
+      "nome": "Azeitona",
+      "quantidade": 1,
+      "tipo": "vegetal",
+      "alergenico": false,
+      "preco": 1.5,
+      "fornecedor": {
+        "nome": "Olivas do Sul",
+        "contato": "contato@olivasdosul.com"
+      }
+    },
+    {
+      "id": 12,
+      "nome": "Pepperoni",
+      "quantidade": 1,
+      "tipo": "embutido",
+      "alergenico": false,
+      "preco": 4.5,
+      "fornecedor": {
+        "nome": "Salsicharia Sabor",
+        "contato": "contato@sabor.com"
+      }
+    },
+    {
+      "id": 13,
+      "nome": "Bacon",
+      "quantidade": 1,
+      "tipo": "embutido",
+      "alergenico": false,
+      "preco": 5.0,
+      "fornecedor": {
+        "nome": "Defumados do Campo",
+        "contato": "contato@defumadoscampo.com"
+      }
+    },
+    {
+      "id": 14,
+      "nome": "Lombo canadense",
+      "quantidade": 1,
+      "tipo": "embutido",
+      "alergenico": false,
+      "preco": 6.0,
+      "fornecedor": {
+        "nome": "Defumados do Campo",
+        "contato": "contato@defumadoscampo.com"
+      }
+    },
+    {
+      "id": 15,
+      "nome": "Salaminho",
+      "quantidade": 1,
+      "tipo": "embutido",
+      "alergenico": false,
+      "preco": 4.0,
+      "fornecedor": {
+        "nome": "Salsicharia Sabor",
+        "contato": "contato@sabor.com"
+      }
+    },
+    {
+      "id": 16,
+      "nome": "Molho branco",
+      "quantidade": 1,
+      "tipo": "molho",
+      "alergenico": false,
+      "preco": 2.5,
+      "fornecedor": {
+        "nome": "Molhos Naturais LTDA",
+        "contato": "vendas@molhosnaturais.com.br"
+      }
+    },
+    {
+      "id": 17,
+      "nome": "Estrogonofe de carne",
+      "quantidade": 1,
+      "tipo": "carne",
+      "alergenico": false,
+      "preco": 7.0,
+      "fornecedor": {
+        "nome": "Carnes Nobres",
+        "contato": "vendas@carnesnobres.com"
+      }
+    },
+    {
+      "id": 18,
+      "nome": "Carne seca",
+      "quantidade": 1,
+      "tipo": "carne",
+      "alergenico": false,
+      "preco": 6.0,
+      "fornecedor": {
+        "nome": "Carnes Nobres",
+        "contato": "vendas@carnesnobres.com"
+      }
+    },
+    {
+      "id": 19,
+      "nome": "Nutella",
+      "quantidade": 1,
+      "tipo": "doce",
+      "alergenico": true,
+      "preco": 6.5,
+      "fornecedor": {
+        "nome": "Doces & Cia",
+        "contato": "vendas@docesecia.com"
+      }
+    },
+    {
+      "id": 20,
+      "nome": "Leite Ninho",
+      "quantidade": 1,
+      "tipo": "doce",
+      "alergenico": true,
+      "preco": 4.0,
+      "fornecedor": {
+        "nome": "Doces & Cia",
+        "contato": "vendas@docesecia.com"
+      }
+    },
+    {
+      "id": 21,
+      "nome": "Doce de leite",
+      "quantidade": 1,
+      "tipo": "doce",
+      "alergenico": true,
+      "preco": 5.0,
+      "fornecedor": {
+        "nome": "Doces & Cia",
+        "contato": "vendas@docesecia.com"
+      }
+    },
+    {
+      "id": 22,
+      "nome": "Brigadeiro",
+      "quantidade": 1,
+      "tipo": "doce",
+      "alergenico": true,
+      "preco": 4.5,
+      "fornecedor": {
+        "nome": "Doces & Cia",
+        "contato": "vendas@docesecia.com"
+      }
+    },
+    {
+      "id": 23,
+      "nome": "Trufa de chocolate",
+      "quantidade": 1,
+      "tipo": "doce",
+      "alergenico": true,
+      "preco": 7.0,
+      "fornecedor": {
+        "nome": "Doces & Cia",
+        "contato": "vendas@docesecia.com"
+      }
+    },
+    {
+      "id": 24,
+      "nome": "Sushi",
+      "quantidade": 1,
+      "tipo": "especial",
+      "alergenico": true,
+      "preco": 8.0,
+      "fornecedor": {
+        "nome": "Especialidades Orientais",
+        "contato": "contato@especialidadesorientais.com"
+      }
+    }
+  ],
+  "pizzas": [
+    {
+      "id": 1,
+      "nome": "Vegetariana",
+      "img": "img/vegetariana.webp",
+      "categoria": "tradicional",
+      "categoria_numero": 1,
+      "preco": 15.0,
+      "tamanho": "média",
+      "ingredientes": [
+        1,
+        2,
+        3,
+        10,
+        11
+      ],
+      "disponivel": true
+    },
+    {
+      "id": 2,
+      "nome": "Calabresa",
+      "img": "img/pizza_calabresa.png",
+      "categoria": "tradicional",
+      "categoria_numero": 1,
+      "preco": 15.0,
+      "tamanho": "média",
+      "ingredientes": [
+        1,
+        3,
+        4
+      ],
+      "disponivel": true
+    },
+    {
+      "id": 3,
+      "nome": "Frango com Catupiry",
+      "img": "img/pizza_frango_catupiry.png",
+      "categoria": "tradicional",
+      "categoria_numero": 1,
+      "preco": 15.0,
+      "tamanho": "média",
+      "ingredientes": [
+        1,
+        5,
+        6
+      ],
+      "disponivel": true
+    },
+    {
+      "id": 4,
+      "nome": "Quatro Queijos",
+      "img": "img/pizza_4_queijo.png",
+      "categoria": "tradicional",
+      "categoria_numero": 1,
+      "preco": 15.0,
+      "tamanho": "média",
+      "ingredientes": [
+        1,
+        6,
+        7,
+        3
+      ],
+      "disponivel": true
+    },
+    {
+      "id": 5,
+      "nome": "Camarão",
+      "img": "img/pizza_camarao.png",
+      "categoria": "especial",
+      "categoria_numero": 2,
+      "preco": 15.0,
+      "tamanho": "média",
+      "ingredientes": [
+        1,
+        3,
+        8
+      ],
+      "disponivel": true
+    },
+    {
+      "id": 6,
+      "nome": "À Moda",
+      "img": "img/pizza_moda.png",
+      "categoria": "tradicional",
+      "categoria_numero": 1,
+      "preco": 15.0,
+      "tamanho": "média",
+      "ingredientes": [
+        1,
+        4,
+        9,
+        10,
+        11
+      ],
+      "disponivel": true
+    },
+    {
+      "id": 7,
+      "nome": "Portuguesa",
+      "img": "img/pizza_portuguesa.png",
+      "categoria": "tradicional",
+      "categoria_numero": 1,
+      "preco": 15.0,
+      "tamanho": "média",
+      "ingredientes": [
+        1,
+        9,
+        10,
+        11,
+        3
+      ],
+      "disponivel": true
+    },
+    {
+      "id": 8,
+      "nome": "Pepperoni",
+      "img": "img/pepperoni.png",
+      "categoria": "tradicional",
+      "categoria_numero": 1,
+      "preco": 15.0,
+      "tamanho": "média",
+      "ingredientes": [
+        1,
+        3,
+        12
+      ],
+      "disponivel": true
+    },
+    {
+      "id": 9,
+      "nome": "Bacon",
+      "img": "img/pizza_bacon.png",
+      "categoria": "tradicional",
+      "categoria_numero": 1,
+      "preco": 15.0,
+      "tamanho": "média",
+      "ingredientes": [
+        1,
+        3,
+        13
+      ],
+      "disponivel": true
+    },
+    {
+      "id": 10,
+      "nome": "Lombo Canadense",
+      "img": "img/pizza_lombo_canadense.png",
+      "categoria": "tradicional",
+      "categoria_numero": 1,
+      "preco": 15.0,
+      "tamanho": "média",
+      "ingredientes": [
+        1,
+        3,
+        14
+      ],
+      "disponivel": true
+    },
+    {
+      "id": 11,
+      "nome": "Marguerita",
+      "img": "img/pizza_marguerita.png",
+      "categoria": "tradicional",
+      "categoria_numero": 1,
+      "preco": 15.0,
+      "tamanho": "média",
+      "ingredientes": [
+        1,
+        2,
+        3
+      ],
+      "disponivel": true
+    },
+    {
+      "id": 12,
+      "nome": "Salaminho",
+      "img": "img/pizza_salaminho.png",
+      "categoria": "tradicional",
+      "categoria_numero": 1,
+      "preco": 15.0,
+      "tamanho": "média",
+      "ingredientes": [
+        1,
+        3,
+        15
+      ],
+      "disponivel": true
+    },
+    {
+      "id": 13,
+      "nome": "Estrogonofe",
+      "img": "img/estrogonofe.webp",
+      "categoria": "especial",
+      "categoria_numero": 2,
+      "preco": 15.0,
+      "tamanho": "média",
+      "ingredientes": [
+        1,
+        16,
+        17
+      ],
+      "disponivel": true
+    },
+    {
+      "id": 14,
+      "nome": "Sushi",
+      "img": "img/pizza_sushi.png",
+      "categoria": "especial",
+      "categoria_numero": 2,
+      "preco": 15.0,
+      "tamanho": "média",
+      "ingredientes": [
+        24
+      ],
+      "disponivel": true
+    },
+    {
+      "id": 15,
+      "nome": "Trufa",
+      "img": "img/pizza_trufa.png",
+      "categoria": "doce",
+      "categoria_numero": 3,
+      "preco": 15.0,
+      "tamanho": "média",
+      "ingredientes": [
+        23,
+        1
+      ],
+      "disponivel": true
+    },
+    {
+      "id": 16,
+      "nome": "Carne Seca",
+      "img": "img/pizza_carne_seca.png",
+      "categoria": "especial",
+      "categoria_numero": 2,
+      "preco": 15.0,
+      "tamanho": "média",
+      "ingredientes": [
+        1,
+        18,
+        3
+      ],
+      "disponivel": true
+    },
+    {
+      "id": 17,
+      "nome": "Nutella com Ninho",
+      "img": "img/pizza_nutella_ninho.png",
+      "categoria": "doce",
+      "categoria_numero": 3,
+      "preco": 15.0,
+      "tamanho": "média",
+      "ingredientes": [
+        19,
+        20
+      ],
+      "disponivel": true
+    },
+    {
+      "id": 18,
+      "nome": "Nutella",
+      "img": "img/nutella.webp",
+      "categoria": "doce",
+      "categoria_numero": 3,
+      "preco": 15.0,
+      "tamanho": "média",
+      "ingredientes": [
+        19
+      ],
+      "disponivel": true
+    },
+    {
+      "id": 19,
+      "nome": "Doce de Leite",
+      "img": "img/pizza_doce_leite.png",
+      "categoria": "doce",
+      "categoria_numero": 3,
+      "preco": 15.0,
+      "tamanho": "média",
+      "ingredientes": [
+        21
+      ],
+      "disponivel": true
+    },
+    {
+      "id": 20,
+      "nome": "Brigadeiro",
+      "img": "img/pizza_brigadeiro.png",
+      "categoria": "doce",
+      "categoria_numero": 3,
+      "preco": 15.0,
+      "tamanho": "média",
+      "ingredientes": [
+        22
+      ],
+      "disponivel": true
+    }
+  ],
+  "extras": [
+    {
+      "id": 1,
+      "nome": "Heineken",
+      "img": "img/heineken.webp",
+      "preco": 10.0,
+      "categoria": "bebidas",
+      "categoria_numero": 4,
+      "tamanho": "1,5L",
+      "descricao": "Cerveja premium importada, refrescante e com sabor marcante.",
+      "teor_alcoolico": "5%",
+      "pais_origem": "Holanda",
+      "avaliacao": 4.7,
+      "estoque": 120,
+      "promocao": false
+    },
+    {
+      "id": 2,
+      "nome": "Cerveja Pilsen",
+      "img": "img/pilsen.png",
+      "preco": 8.5,
+      "categoria": "bebidas",
+      "categoria_numero": 4,
+      "tamanho": "1L",
+      "descricao": "Cerveja pilsen clássica, sabor suave e refrescante, ideal para encontros com amigos.",
+      "teor_alcoolico": "4,5%",
+      "pais_origem": "Brasil",
+      "avaliacao": 4.5,
+      "estoque": 200,
+      "promocao": true
+    },
+    {
+      "id": 3,
+      "nome": "Coca-Cola Retornável",
+      "img": "img/cocacola_retornavel.webp",
+      "preco": 5.5,
+      "tamanho": "1L",
+      "descricao": "Coca-Cola clássica em garrafa retornável, sabor tradicional com opção sustentável.",
+      "categoria": "Refrigerante",
+      "teor_alcoolico": "0%",
+      "pais_origem": "Estados Unidos",
+      "avaliacao": 4.6,
+      "estoque": 150,
+      "promocao": true,
+      "tipo_embalagem": "Retornável",
+      "valor_garrafa": 2.0,
+      "preco_com_garrafa": 7.5
+    },
+    {
+      "id": 4,
+      "nome": "Suco de Uva Integral",
+      "img": "img/suco_uva.png",
+      "preco": 12.0,
+      "tamanho": "1L",
+      "descricao": "Suco de uva 100% integral, sem adição de açúcar, rico em antioxidantes e sabor natural.",
+      "categoria": "Sucos",
+      "categoria_numero": 5,
+      "teor_alcoolico": "0%",
+      "pais_origem": "Brasil",
+      "avaliacao": 4.8,
+      "estoque": 80,
+      "promocao": false,
+      "tipo_embalagem": "Plastica"
+    }
+  ]
+}

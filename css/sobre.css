@@ -1,0 +1,83 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+
+*{
+    font-family: 'Montserrat', sans-serif;
+     
+
+}
+
+.barra-titulo{
+    display: flex;
+    gap: 10px;
+    background-color: var(--vermelho);
+    color:white;
+
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+.barra-titulo img{
+
+    max-height: 60px;
+
+}
+
+
+.missoes{
+    margin: 30px 10% 30px 10%;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+.missao{
+    border: 1px solid var(--cinzaClaro);
+    border-radius: 5px;
+    background-color: var(--begeAmarelado);
+    font-size: 12px;
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-bottom: 15px;
+}
+
+
+.missao-titulo{
+    color: var(--vermelho);
+}
+
+.line-missao{
+    border: 1px solid var(--amarelo);
+}
+
+.destaque{
+    color: black;
+}
+
+.missao-redes{
+    background-color: var(--bege);
+}
+
+.missao-redes-sociais{
+    color: var(--vermelho);
+    text-align: center;
+    margin-top: 30px;
+}
+
+.div-redes{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+#icons-redes{
+    color: var(--vermelho);
+    font-size: 25px;
+}
+
+#link-redes{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: var(--vermelho);
+}

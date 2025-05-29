@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <!-- Required meta tags-->
+    <meta charset="utf-8">
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, viewport-fit=cover">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <!-- Color theme for statusbar (Android only) -->
+    <meta name="theme-color" content="#2196f3">
+    <!-- Your app title -->
+    <title>BlitzBuy</title>
+    <!-- Path to Framework7 Library Bundle CSS -->
+    <link rel="stylesheet" href="lib/framework7-bundle.min.css">
+    <!-- CSS PERSONALIZADO PARA MENU-->
+    <link rel="stylesheet" href="css/detalhes.css">
+
+    <!--Ícones Material Design-->
+    <link rel="stylesheet" href="css/boxicons/boxicons.css">
+
+
+</head>
+
+<body>
+    <!-- App root element -->
+    <div id="app">
+        <!-- Your main view, should have "view-main" class -->
+        <div class="view view-main">
+            <!-- Initial Page, "data-name" contains page name -->
+            <div data-name="detalhes" class="page color-theme-blue">
+                <!-- TAB BAR-->
+                <div class="toolbar toolbar-bottom">
+                    <div class="toolbar-inner display-flex align-items-center justify-content-center">
+                        <div class="flex-40 text-align-center">
+                            <h3 id="preco-produto" class="pricing no-padding no-margin">R$X.XXX,XX</h3>
+                        </div>
+                        <div class="flex-60">
+                            <button class="add-cart">Adicionar ao Carrinho</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Scrollable page content -->
+                <div class="page-content">
+                    <div class="prod-detail">
+                        <!-- Botões superiores -->
+                        <div class="buttons-top">
+                            <a href="/index/">
+                                <i class="bx bxs-chevron-left"></i>
+                            </a>
+                            <a href="#">
+                                <i class='bx bx-bookmark-plus'></i>
+                            </a>
+                            <a href="#">
+                                <i class='bx bx-share-alt'></i>
+                            </a>
+                        </div>
+                        <img id="imagem-produto">
+                    </div>
+
+                    <!-- Detalhes do Produto -->
+                    <div class="prod-content">
+                        <div class="block">
+                            <div class="line padding-top">
+                                <b id="nome-produto">Nome do Produto</b>
+                            </div>
+
+                            <div class="margin-top display-flex align-items-center justify-content-start">
+                                <button class="btn-produtos">
+                                    <i class="bx bx-star star"></i>
+                                    <span id="rating-produto"></span>
+                                </button>
+                                <button class="btn-produtos">
+                                    <span id="categoria-produto"></span>
+                                </button>
+                            </div>
+
+                            <div class="display-flex align-items-center justify-content-center">
+                                <p id="descricao-produto">...</p>
+                            </div>
+
+                            <table id="lista-caracteristicas" data-active="false">
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Path to Framework7 Library Bundle JS-->
+    <script type="text/javascript" src="lib/framework7-bundle.min.js"></script>
+    <!-- jQuery -->
+    <script type="text/javascript" src="lib/jquery-3.7.0.min.js"></script>
+    <!-- Roteamento do app-->
+    <script type="text/javascript" src="js/routes.js"></script>
+    <script type="text/javascript" src="js/script.js"></script>
+    <script src="cordova.js"></script>
+</body>
+
+</html>

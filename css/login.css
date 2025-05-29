@@ -1,0 +1,59 @@
+.block-usuario {
+  height: 65vh; /* Altura total da tela */
+  display: flex;
+  justify-content: center; /* Centraliza horizontalmente */
+  align-items: center; /* Centraliza verticalmente */
+}
+
+.login {
+  width: 350px;
+  border-radius: 5%;
+  background-color: var(--bege);
+}
+h1 {
+  text-align: center;
+}
+
+.nome {
+  display: flex;
+  margin-bottom: 10px;
+
+  flex-direction: column;
+  align-items: center;
+}
+.senha {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 30px;
+  align-items: center;
+}
+.paragrafo {
+  text-align: center;
+  font-weight: 700;
+  margin: 0%;
+}
+.navbar-inner {
+  background-color: var(--vermelho);
+  color: var(--begeAmarelado);
+}
+.input {
+  border: none;
+  width: 250px;
+  align-items: center;
+  height: 25px;
+}
+.botao {
+  display: flex;
+  text-align: center;
+  justify-content: center;
+  width: 200px;
+  border: none;
+  align-items: center;
+  height: 30px;
+}
+.divbotao {
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
