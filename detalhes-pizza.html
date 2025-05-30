@@ -22,11 +22,10 @@
     <div class="view view-main">
       <div data-name="detalhes" class="page">
         <!-- Navbar -->
-        <div class="toolbar toolbar-bottom">
+        <div class="toolbar toolbar-bottom toolbar-detalhes">
           <div class="toolbar-inner display-flex align-items-center justify-content-center">
             <div class="flex-40 text-align-center">
-              <span id="price-details" class="line-through"></span>
-              <h3 id="promotional-price-details" class="pricing no-padding no-margin">
+              <h3 id="preco" class="pricing no-padding no-margin">
                 R$X.XXX,XX
               </h3>
             </div>
@@ -50,26 +49,28 @@
                 <i class="bx bx-share-alt link"></i>
               </a>
             </div>
-            <img id="imagem-pizza" src="" />
+            <div class="display-flex justify-content-center align-items-center flex-direction-column">
+              <img id="imagem-produto" src="" />
+              <p id="descricao-produto"></p>
+            </div>
           </div>
 
           <!-- Conteúdo -->
           <div>
             <h1 id="nome-pizza"></h1>
-
             <div class="pizza-info">
               <h2>Tamanho:</h2>
               <div class="tamanhos">
-                <button class="tamanho-btn selected" data-tamanho="Pequena">
+                <button class="tamanho-btn selected Pequena" data-tamanho="Pequena">
                   Pequena
                 </button>
-                <button class="tamanho-btn" data-tamanho="Media">
+                <button class="tamanho-btn Media" data-tamanho="Media">
                   Média
                 </button>
-                <button class="tamanho-btn" data-tamanho="Grande">
+                <button class="tamanho-btn Grande" data-tamanho="Grande">
                   Grande
                 </button>
-                <button class="tamanho-btn" data-tamanho="Gigante">
+                <button class="tamanho-btn Gigante" data-tamanho="Gigante">
                   Gigante
                 </button>
               </div>

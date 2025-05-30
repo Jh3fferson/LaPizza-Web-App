@@ -21,7 +21,7 @@ function gerarItemHTML(itemCarrinho, index, totalFormatado) {
         </div>
         <div class="area-detalhes" style="flex:1; margin-left:15px;">
           <div class="sup display-flex justify-content-space-between align-items-center">
-            <span class="nome-prod font-strong">${itemCarrinho.nome} (${itemCarrinho.tamanho})</span>
+            <span class="${itemCarrinho.verificaPizza ? "redirecionar-pizza" : "redirecionar-prod"} nome-prod font-strong" data-index="${index}">${itemCarrinho.nome} (${itemCarrinho.tamanho})</span>
             <a class="delete-item link icon-only" data-index="${index}">
               <i class="bx bx-x-circle"></i>
             </a>
@@ -92,6 +92,19 @@ function configurarEventosCarrinho() {
     const index = parseInt($(this).data("index"));
     carrinho[index].quantidade++;
     atualizarTotais();
+  });
+
+  $(".redirecionar-pizza").on("click", function () {
+    const index = parseInt($(this).data("index"));
+    localStorage.setItem("actual-id-pizza", carrinho[index].id);
+    localStorage.setItem("actual-index-pizza", carrinho[index].index);
+    app.views.main.router.navigate("/detalhes-pizza/");
+  });
+
+  $(".redirecionar-prod").on("click", function () {
+    const index = parseInt($(this).data("index"));
+    localStorage.setItem("actual-id-pizza", carrinho[index].id);
+    app.views.main.router.navigate("/detalhes-produto/");
   });
 }
 

@@ -56,33 +56,42 @@
                                 <i class='bx bx-share-al linkt'></i>
                             </a>
                         </div>
-                        <img id="imagem-produto">
+                        <div class="display-flex justify-content-center align-items-center flex-direction-column">
+                            <img id="imagem-produto">
+                            <p id="descricao-produto">...</p>
+                        </div>
                     </div>
 
                     <!-- Detalhes do Produto -->
                     <div class="prod-content">
-                        <div class="block">
-                            <div class="line padding-top">
-                                <b id="nome-produto">Nome do Produto</b>
-                            </div>
+                        <h1 id="nome-produto">Nome do Produto</h1>
 
-                            <div class="margin-top display-flex align-items-center justify-content-start">
-                                <button class="btn-produtos">
-                                    <i class="bx bx-star star"></i>
-                                    <span id="rating-produto"></span>
-                                </button>
-                                <button class="btn-produtos">
-                                    <span id="categoria-produto"></span>
-                                </button>
-                            </div>
-
-                            <div class="display-flex align-items-center justify-content-center">
-                                <p id="descricao-produto">...</p>
-                            </div>
-
-                            <table id="lista-caracteristicas" data-active="false">
-                            </table>
+                        <div class="margin-top display-flex align-items-center justify-content-start">
+                            <button disabled class="btn-produtos text-bold">
+                                <i class="bx bx-star star"></i>
+                                <span id="rating-produto"></span>
+                            </button>
+                            <button disabled class="btn-produtos text-bold">
+                                <span id="categoria-produto"></span>
+                            </button>
                         </div>
+                        <table id="lista-caracteristicas" data-active="false">
+                            <tr class="caracteristicas-produtos">
+                                <td class="caracteristica-nome"><button class="text-bold" disabled>Origem: </button> </td>
+                                <td class="linha"></td>
+                                <td class="caracteristica-valor"><button class="text-bold" disabled id="origem"></button></td>
+                            </tr>
+                            <tr class="caracteristicas-produtos">
+                                <td class="caracteristica-nome"><button class="text-bold" disabled>Teor Alcoolico: </button> </td>
+                                <td class="linha"></td>
+                                <td class="caracteristica-valor"><button class="text-bold" disabled id="teor"></button></td>
+                            </tr>
+                            <tr class="caracteristicas-produtos">
+                                <td class="caracteristica-nome"><button class="text-bold" disabled>Tamanho: </button> </td>
+                                <td class="linha"></td>
+                                <td class="caracteristica-valor"><button class="text-bold" disabled id="tamanho"></button></td>
+                            </tr>
+                        </table>
                     </div>
                 </div>
             </div>

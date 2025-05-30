@@ -20,12 +20,12 @@
 
 
 .pizza-detalhes-container {
-  background-color:  var(--begeAmarelado);
+  background-color: var(--begeAmarelado);
   margin: auto;
   padding: 20px;
   font-family: Arial, sans-serif;
   border-radius: 12px;
-  
+
 }
 
 .link {
@@ -33,65 +33,90 @@
 }
 
 .buttons-top {
-    display: flex;
-    width: 100%;
-    position: absolute;
-    top: 20px;
-    justify-content: space-between;
-    align-items: center;
+  display: flex;
+  width: 100%;
+  position: absolute;
+  top: 20px;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .buttons-top a {
-    width: 40px;
-    height: 40px;
-    background-color: var(--branco);
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border: 1px solid var(--gelo);
-    font-size: 20px;
-    color: var(--azul);
+  width: 40px;
+  height: 40px;
+  background-color: var(--branco);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--gelo);
+  font-size: 20px;
+  color: var(--azul);
 }
 
-.buttons-top a:first-child{
-    margin-left: 20px;
-    margin-right: auto;
+.buttons-top a:first-child {
+  margin-left: 20px;
+  margin-right: auto;
 }
 
-.buttons-top a:last-child{
-    margin-right: 20px;
-    margin-left: 8px;
+.buttons-top a:last-child {
+  margin-right: 20px;
+  margin-left: 8px;
 }
 
-.prod-detail{
-    background-color: var(--gelo);
-    width: 100%;
-    height: 450px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: relative;
+.prod-detail {
+  background-color: var(--gelo);
+  width: 100%;
+  height: 450px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
 }
 
-.prod-detail img{
-    max-width: 400px;
+.prod-detail div img {
+  max-width: 400px;
+}
+
+#descricao-produto{
+  width: 100%;
+  border-top: 1px solid var(--preto);
+  padding: 5%;
 }
 
 .ingrediente-item {
   display: flex;
+  width: 100%;
   align-items: center;
   margin-bottom: 8px;
 }
 
 .ingrediente-nome {
-  flex: 1;
+  width: 100%;
+  word-wrap: break-word;
+  word-break: break-word;
+  color: var(--preto);
 }
 
-.quantidade-controles {
+.linha {
+  width: 100%;
+  border-bottom: 1px dotted black;
+  height: 30px;
+}
+
+.td-adições {
   display: flex;
   align-items: center;
-  gap: 5px;
+  flex-direction: row;
+}
+
+.inp-extras {
+  width: 20px;
+  text-align: center;
+  background: transparent;
+  border: none;
+  text-align: center;
+  font-weight: bold;
 }
 
 button {
@@ -100,12 +125,6 @@ button {
   padding: 6px 10px;
   cursor: pointer;
   border-color: var(--begeAmarelado);
-}
-
-.quantidade {
-  min-width: 20px;
-  text-align: center;
-  font-weight: bold;
 }
 
 /* Tamanhos */
@@ -130,42 +149,10 @@ button {
   border-color: rgb(88, 86, 44);
 }
 
-.linha-adicionar{
-  background-color: var(--begeAmarelado);
-  margin-top: 5px;
-}
-
-/* Finalizar */
-.finalizar {
-  margin-top: 20px;
-  text-align: center;
-}
-
-#finalizar-btn {
-  background-color: var(--begeAmarelado);
-  color: white;
-  border: none;
-  border-radius: 6px;
-  padding: 10px 20px;
-  font-size: 16px;
-}
-
 .display-flex {
   display: flex;
   justify-content: space-between;
   align-items: center;
-}
-
-.item-nome {
-  flex-basis: 70%;      /* Nome ocupa até 70% do espaço interno */
-  overflow: hidden;     /* Esconde o excesso */
-  text-overflow: ellipsis; /* Coloca "..." se ultrapassar */
-  white-space: nowrap;  /* Mantém em uma linha */
-}
-
-.item-quantidade {
-  width: 40px;
-  text-align: center;
 }
 
 table {
@@ -178,4 +165,28 @@ table {
   align-items: center;
 }
 
+.caracteristicas-produtos {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  margin-bottom: 8px;
+}
 
+.caracteristica-nome {
+  width: 100%;
+  word-wrap: break-word;
+  word-break: break-word;
+  font-weight: bold;
+}
+
+.caracteristica-valor {
+  width: 100%;
+  word-wrap: break-word;
+  word-break: break-word;
+  font-weight: bold;
+}
+
+.text-bold {
+  font-weight: bold;
+  color: black;
+}

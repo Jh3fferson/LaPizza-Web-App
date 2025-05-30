@@ -12,25 +12,10 @@ if (item) {
   $("#rating-produto").html(item.avaliacao);
   $("#categoria-produto").html(item.categoria);
   $("#descricao-produto").html(item.descricao);
+  $("#origem").html(item.pais_origem);
+  $("#teor").html(item.teor_alcoolico);
+  $("#tamanho").html(item.tamanho);
   updateColor(item.id);
-
-  var tabelaDetalhes = $("#lista-caracteristicas");
-
-  var linha = `
-        <tr>
-            <td><span>Origem: </span> </td>
-            <td> <span> ${item.pais_origem}</span></td>
-        </tr>
-               <tr>
-            <td><span>Teor Alcoolico: </span> </td>
-            <td> <span> ${item.teor_alcoolico}</span></td>
-        </tr>
-               <tr>
-            <td><span>Tamanho: </span> </td>
-            <td> <span> ${item.tamanho}</span></td>
-        </tr>
-    `;
-  tabelaDetalhes.append(linha);
 
 
   $("#preco-produto").html(

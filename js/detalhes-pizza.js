@@ -1,11 +1,13 @@
 // Recuperar dados do localStorage
 var idAtual = parseInt(localStorage.getItem("actual-id-pizza"));
+var indexAtual = parseInt(localStorage.getItem("actual-index-pizza")) || 0;
 var pizzaData = JSON.parse(localStorage.getItem("pizzaData"));
 var ingredientes = pizzaData.ingredientes; // todos ingredientes possíveis
 var extras = pizzaData.extras; // todos extras possíveis (bebidas, etc)
 var pizzas = pizzaData.pizzas;
-var item = pizzas.find((p) => p.id === idAtual);
 var pedidosGuardados = JSON.parse(localStorage.getItem("pedidos-guardados")) || [];
+var cart = JSON.parse(localStorage.getItem("cart-items")) || [];
+var item = pizzas.find((p) => p.id === idAtual);
 var multiplicadorTamanho = 1;
 
 // Variáveis do pedido atual
@@ -15,8 +17,33 @@ var extrasNoPedido = []; // extras com quantidade
 var total_base = 0;
 var total = 0;
 var tamanho;
+var pedidoGuardado;
 
-var pedidoGuardado = pedidosGuardados.find((pedido) => pedido.id === idAtual);
+if (indexAtual == 0) {
+  pedidoGuardado = pedidosGuardados.find((pedido) => pedido.id === idAtual);
+}
+else {
+  var cartItem = cart.find(c => c.id === idAtual && c.index == indexAtual);
+  console.log(cartItem)
+  if (cartItem) {
+    pedidoGuardado = {
+      id: idAtual,
+      pizza: cartItem.ingredientes,
+      extrasNoPedido: cartItem.extrasNoPedido,
+      tamanho: cartItem.tamanho,
+      total_base: item.total,
+      total: cartItem.total,
+      img: item.img,
+      nome: item.nome,
+      quantidade: 1,
+      verificaPizza: true
+    };
+    console.log();
+    console.log(pedidoGuardado);
+    pedidosGuardados.push(pedidoGuardado);
+    localStorage.setItem("pedidos-guardados", JSON.stringify(pedidosGuardados));
+  }
+}
 
 if (pedidoGuardado) {
   idpizza = pedidoGuardado.id;
@@ -165,20 +192,19 @@ function renderLista(
   isIngrediente = false
 ) {
   let itemHTML = `
-    <tr class="linha-adicionar" data-id="${item.id}">
-      <td style="width: 20%; text-align: center; font-size:">
+    <tr class="ingrediente-item" data-id="${item.id}">
+    <td class="ingrediente-nome">
+    <button class="text-bold" disabled>${item.nome}: </button>
+    </td>
+    <td class="linha"></td>
+      <td class="td-adições" style="width: 20%; text-align: center; font-size:">
         <button class="sub" ${subButtonDisabled}>-</button>
-      </td>
-      <td style="width: 60%;">
         <div class="display-flex justify-content-space-between">
-          <span>${item.nome}</span>
           ${isIngrediente
       ? '<span class="status-indicador"></span>'
-      : `<input readonly style="width: 40px; text-align: center;" value="0">`
+      : `<input class="inp-extras" readonly value="0">`
     }
         </div>
-      </td>
-      <td style="width: 20%; text-align: center;">
         <button class="add">+</button>
       </td>
     </tr>`;
@@ -188,12 +214,13 @@ function renderLista(
 // Renderizar as duas listas no HTML
 if (item) {
   // Dados da pizza
-  $("#imagem-pizza").attr("src", item.img);
+  $("#imagem-produto").attr("src", item.img);
   $("#nome-pizza").html(item.nome);
-  $("#promotional-price-details").html(
+  $("#preco").html(
     item.preco.toLocaleString("pt-BR", { style: "currency", currency: "BRL" })
   );
-  $("#description-details").html(definirOsNomesDosIngredientes(item));
+  $("#descricao-produto").html(definirOsNomesDosIngredientes(item));
+  atualizarTamanhoAtual();
 
   // Ingredientes (originais + acréscimos)
   ingredientes.forEach((ingrediente) => {
@@ -228,6 +255,11 @@ if (item) {
   atualizarInputsIngredientes();
   atualizarInputsExtras();
   adicionarTotal();
+  if (indexAtual > 0) {
+    $('button').prop('disabled', true);
+    $('.toolbar-detalhes').hide();
+  }
+
 } else {
   console.log("Produto não encontrado!");
 }
@@ -262,7 +294,7 @@ $("#lista-extras").on("click", ".sub", function () {
 
 // Função para adicionar total no HTML
 function adicionarTotal() {
-  $("#promotional-price-details").html(
+  $("#preco").html(
     total.toLocaleString("pt-BR", { style: "currency", currency: "BRL" })
   );
 }
@@ -345,7 +377,7 @@ function addItemNoCarrinho() {
   guardarpizza();
 
   // Pega o carrinho do localStorage ou inicia um array vazio
-  var cart = JSON.parse(localStorage.getItem("cart-items")) || [];
+  cart = JSON.parse(localStorage.getItem("cart-items")) || [];
 
   // Procura se já existe o item no carrinho
   var idNoCarrinho = cart.findIndex((c) => c.id === idAtual);
@@ -474,4 +506,9 @@ function verificarPersonalizacao() {
   else {
     return true;
   }
+}
+
+function atualizarTamanhoAtual() {
+  $(".tamanhos .tamanho-btn").removeClass("selected");
+  $(`.${tamanho}`).addClass("selected");
 }

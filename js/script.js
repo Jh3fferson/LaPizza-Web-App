@@ -51,7 +51,7 @@ $(".categorias").on("click", ".filter-btn", function () {
 function renderizarProdutos(categoria_numero = 0) {
   $("#produtos").empty();
   var pizzas = JSON.parse(localStorage.getItem("pizzaData")).pizzas;
-  var extras = JSON.parse(localStorage.getItem("pizzaData")).extras;
+  var produtos = JSON.parse(localStorage.getItem("pizzaData")).extras;
   pizzas.forEach((pizza) => {
     if (pizza.categoria_numero == categoria_numero || categoria_numero == 0) {
       var productHtml = `
@@ -86,44 +86,45 @@ function renderizarProdutos(categoria_numero = 0) {
   $(".item-pizza").on("click", function () {
     var id = $(this).attr("data-id");
     localStorage.setItem("actual-id-pizza", id);
+    localStorage.setItem("actual-index-pizza", 0);
     app.views.main.router.navigate("/detalhes-pizza/");
   });
 
-  extras.forEach((extra) => {
-    if (extra.categoria_numero == categoria_numero || categoria_numero == 0) {
-    var productHtml = `
+  produtos.forEach((produto) => {
+    if (produto.categoria_numero == categoria_numero || categoria_numero == 0) {
+      var productHtml = `
                   <div class="item-card">
-                    <a data-id="${extra.id}" href="#" class="item item-extra">
+                    <a data-id="${produto.id}" href="#" class="item item-produto">
                       <div class="img-container">
                         <img
-                          src="${extra.img}"
+                          src="${produto.img}"
                         />
                       </div>
                       <div class="nome-preco">
-                        <span>${extra.nome}</span>
+                        <span>${produto.nome}</span>
                         <span class="bold margin-right">
-                          <i class="preco">${extra.preco.toLocaleString(
-      "pt-BR",
-      { style: "currency", currency: "BRL" }
-    )} </i>
+                          <i class="preco">${produto.preco.toLocaleString(
+        "pt-BR",
+        { style: "currency", currency: "BRL" }
+      )} </i>
                         </span>
                       </div>
                       <div class="descricao">
                         <span>
-                         ${extra.tamanho}, 
+                         ${produto.tamanho}, 
                         </span>
                         <span>Teor Aolcólico: 
-                        ${extra.teor_alcoolico}
+                        ${produto.teor_alcoolico}
                         </span>
                       </div>
                     </a>
                   </div>
         `;
-    $("#produtos").append(productHtml);
-  }
+      $("#produtos").append(productHtml);
+    }
   });
 
-  $(".item-extra").on("click", function () {
+  $(".item-produto").on("click", function () {
     var id = $(this).attr("data-id");
     localStorage.setItem("actual-id-produto", id);
     app.views.main.router.navigate("/detalhes-produto/");
