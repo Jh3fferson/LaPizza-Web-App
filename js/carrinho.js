@@ -149,7 +149,7 @@ function totalCarrinho(subtotal, frete) {
     total.toLocaleString("pt-BR", { style: "currency", currency: "BRL" })
   );
     $("#valor-frete").html(
-    total.toLocaleString("pt-BR", { style: "currency", currency: "BRL" })
+    frete.toLocaleString("pt-BR", { style: "currency", currency: "BRL" })
   );
 }
 
