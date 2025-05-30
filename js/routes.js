@@ -18,6 +18,26 @@ var app = new Framework7({
   // Add default routes
   routes: [
     {
+      path: "/criar-conta/",
+      url: "criar-conta.html",
+      animate: false,
+      on: {
+        pageBeforeIn: function (event, page) {
+          // fazer algo antes da página ser exibida
+        },
+        pageAfterIn: function (event, page) {
+          // fazer algo depois da página ser exibida
+        },
+        pageInit: function (event, page) {
+          // fazer algo quando a página for inicializada
+          $.getScript("js/criar-conta.js");
+        },
+        pageBeforeRemove: function (event, page) {
+          // fazer algo antes da página ser removida do DOM
+        },
+      },
+    },
+    {
       path: "/login/",
       url: "login.html",
       animate: false,
@@ -43,8 +63,8 @@ var app = new Framework7({
       url: "index.html",
       animate: false,
       beforeEnter: function (to) {
-        let pass = localStorage.getItem("pass");
-        pass = pass ? JSON.parse(pass) : false;
+        let pass = localStorage.getItem("usuario-atual");
+        pass = pass ? JSON.parse(pass).pass : false;
         if (pass === true) {
           to.resolve();
         } else {
@@ -100,8 +120,8 @@ var app = new Framework7({
       url: "sobre.html",
       animate: false,
       beforeEnter: function (to) {
-        let pass = localStorage.getItem("pass");
-        pass = pass ? JSON.parse(pass) : false;
+        let pass = localStorage.getItem("usuario-atual");
+        pass = pass ? JSON.parse(pass).pass : false;
         if (pass === true) {
           to.resolve();
         } else {
@@ -131,8 +151,8 @@ var app = new Framework7({
       url: "favoritos.html",
       animate: false,
       beforeEnter: function (to) {
-        let pass = localStorage.getItem("pass");
-        pass = pass ? JSON.parse(pass) : false;
+        let pass = localStorage.getItem("usuario-atual");
+        pass = pass ? JSON.parse(pass).pass : false;
         if (pass === true) {
           to.resolve();
         } else {
@@ -163,8 +183,8 @@ var app = new Framework7({
       url: "detalhes-pizza.html",
       animate: false,
       beforeEnter: function (to) {
-        let pass = localStorage.getItem("pass");
-        pass = pass ? JSON.parse(pass) : false;
+        let pass = localStorage.getItem("usuario-atual");
+        pass = pass ? JSON.parse(pass).pass : false;
         if (pass === true) {
           to.resolve();
         } else {
@@ -195,8 +215,8 @@ var app = new Framework7({
       url: "detalhes-produto.html",
       animate: false,
       beforeEnter: function (to) {
-        let pass = localStorage.getItem("pass");
-        pass = pass ? JSON.parse(pass) : false;
+        let pass = localStorage.getItem("usuario-atual");
+        pass = pass ? JSON.parse(pass).pass : false;
         if (pass === true) {
           to.resolve();
         } else {
@@ -230,8 +250,8 @@ var app = new Framework7({
         transition: "f7-push",
       },
       beforeEnter: function (to) {
-        let pass = localStorage.getItem("pass");
-        pass = pass ? JSON.parse(pass) : false;
+        let pass = localStorage.getItem("usuario-atual");
+        pass = pass ? JSON.parse(pass).pass : false;
         if (pass === true) {
           to.resolve();
         } else {
@@ -263,8 +283,8 @@ var app = new Framework7({
       url: "comprar.html",
       animate: false,
       beforeEnter: function (to) {
-        let pass = localStorage.getItem("pass");
-        pass = pass ? JSON.parse(pass) : false;
+        let pass = localStorage.getItem("usuario-atual");
+        pass = pass ? JSON.parse(pass).pass : false;
         if (pass === true) {
           to.resolve();
         } else {

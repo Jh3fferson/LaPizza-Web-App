@@ -62,8 +62,11 @@ function adicionarCarrinho(item, quantidade) {
     itemCarrinho.total_item = itemCarrinho.quantidade * item.preco;
   } else {
     carrinho.push({
-      item: item,
+      id: item.id,
+      nome: item.nome,
+      img: item.img,
       quantidade: quantidade,
+      tamanho: item.tamanho,
       total: quantidade * item.preco,
       verificaPizza: false,
     });

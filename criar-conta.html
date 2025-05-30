@@ -26,13 +26,13 @@
         <!-- Your main view, should have "view-main" class -->
         <div class="view view-main">
             <!-- Initial Page, "data-name" contains page name -->
-            <div data-name="login" class="page">
+            <div data-name="criar-conta" class="page">
 
                 <!-- Top Navbar -->
                 <div class="navbar">
                     <div class="navbar-bg"></div>
                     <div class="navbar-inner justify-content-center">
-                        <div class="title ">LOGIN</div>
+                        <div class="title ">Criar Conta</div>
                     </div>
                 </div>
 
@@ -43,21 +43,21 @@
                             <H1>CONTA</H1>
                             <div class="nome">
                                 <span>Nome:</span>
-                                <input required class="input" id="nome" type="text"> 
+                                <input required class="input" id="criar-nome" type="text">
                             </div>
-                            <div class="senha" >
+                            <div class="email">
+                                <span>Email:</span>
+                                <input required class="input" id="criar-email" type="email">
+                            </div>
+                            <div class="senha">
                                 <span>Senha:</span>
-                                <input required class="input" id="senha" type="password">
+                                <input required class="input" id="criar-senha" type="password">
                             </div>
                             <div class="erroNS text-align-center" style="display: none; color: red;" hidden>
                                 Nome ou senhas Incorretos!
                             </div>
                             <div class="divbotao">
-                                <button class="btn-login">ENTRAR</button>
-                            </div>
-                            <div class="display-flex justify-content-center align-items-center flex-direction-column">
-                                <a href="/criar-conta/" class="paragrafo">Criar Conta</a>
-                                <a class="paragrafo">Esqueci a senha</a>
+                                <button class="btn-criar">Criar</button>
                             </div>
                         </form>
                     </div>
@@ -67,8 +67,8 @@
     </div>
     <!-- Path to Framework7 Library Bundle JS-->
     <script type="text/javascript" src="lib/framework7-bundle.min.js"></script>
-	<!-- jQuery -->
-	<script type="text/javascript" src="lib/jquery-3.7.0.min.js"></script>	
+    <!-- jQuery -->
+    <script type="text/javascript" src="lib/jquery-3.7.0.min.js"></script>
     <!-- Roteamento do app-->
     <script type="text/javascript" src="js/routes.js"></script>
     <script src="cordova.js"></script>

@@ -21,6 +21,16 @@ h1 {
   flex-direction: column;
   align-items: center;
 }
+
+.email {
+  display: flex;
+  margin-bottom: 10px;
+
+  flex-direction: column;
+  align-items: center;
+}
+
+
 .senha {
   display: flex;
   flex-direction: column;

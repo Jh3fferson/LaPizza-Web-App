@@ -12,7 +12,8 @@ if (carrinho.length > 0) {
 }
 
 // Renderiza os itens do carrinho
-function gerarItemPizzaHTML(itemCarrinho, index, totalFormatado) {
+function gerarItemHTML(itemCarrinho, index, totalFormatado) {
+  const nomes = definirOsNomesDosIngredientes(itemCarrinho.extrasNoPedido);
   return `
     <div class="item-carrinho" data-index="${index}">
         <div class="area-img" style="flex-shrink:0;">
@@ -25,33 +26,9 @@ function gerarItemPizzaHTML(itemCarrinho, index, totalFormatado) {
               <i class="bx bx-x-circle"></i>
             </a>
           </div>
-          <div class="middle text-muted" style="margin: 6px 0;">
-            Extras: ${definirOsNomesDosIngredientes(itemCarrinho.extrasNoPedido)}
-          </div>
-          <div class="preco-qtd display-flex justify-content-space-between align-items-center">
-            <span class="preco font-strong">${totalFormatado}</span>
-            <div class="count display-flex align-items-center">
-              <a class="menos button button-small button-outline" data-index="${index}" href="#">-</a>
-              <input readonly class="qtd-item input" type="text" value="${itemCarrinho.quantidade}" />
-              <a class="mais button button-small button-outline" data-index="${index}" href="#">+</a>
-            </div>
-          </div>
-      </div>
-    </div>`;
-}
-
-function gerarItemNormalHTML(itemCarrinho, index, totalFormatado) {
-  return `
-    <div class="item-carrinho" data-index="${index}">
-        <div class="area-img" style="flex-shrink:0;">
-          <img src="${itemCarrinho.item.img}" alt="${itemCarrinho.item.nome}" style="width:80px; border-radius:6px;" />
-        </div>
-        <div class="area-detalhes" style="flex:1; margin-left:15px;">
-          <div class="sup display-flex justify-content-space-between align-items-center">
-            <span class="nome-prod font-strong">${itemCarrinho.item.nome}</span>
-            <a class="delete-item link icon-only" data-index="${index}">
-              <i class="bx bx-x-circle"></i>
-            </a>
+          <div class="middle text-muted" style="margin: 6px 0;${itemCarrinho.verificaPizza ? "" : "visibility:hidden;"}">
+            <span class="extras" style="${nomes == "Nenhum" ? "display:none;" : ""}">Extras: ${nomes}</span>
+            <span>${(itemCarrinho.personalizada) ? "Personalizada" : ""}</span>
           </div>
           <div class="preco-qtd display-flex justify-content-space-between align-items-center">
             <span class="preco font-strong">${totalFormatado}</span>
@@ -75,9 +52,7 @@ function renderizarCarrinho() {
       currency: "BRL",
     });
 
-    const itemHTML = itemCarrinho.verificaPizza
-      ? gerarItemPizzaHTML(itemCarrinho, index, totalFormatado)
-      : gerarItemNormalHTML(itemCarrinho, index, totalFormatado);
+    const itemHTML = gerarItemHTML(itemCarrinho, index, totalFormatado);
 
     $lista.append(itemHTML);
   });
@@ -91,7 +66,9 @@ function configurarEventosCarrinho() {
     app.dialog.confirm("Tem certeza que deseja excluir este item?", "Excluir", function () {
       carrinho.splice(index, 1);
       atualizarTotais();
-      carrinhoVazio();
+      if (carrinho.length == 0) {
+        carrinhoVazio();
+      }
     });
   });
 
@@ -99,11 +76,14 @@ function configurarEventosCarrinho() {
     const index = parseInt($(this).data("index"));
     if (carrinho[index].quantidade > 1) {
       carrinho[index].quantidade--;
+      atualizarTotais();
     } else {
       app.dialog.confirm("Deseja excluir este item?", "Excluir", function () {
         carrinho.splice(index, 1);
-        atualizarTotais(); //Colocar aqui
-        carrinhoVazio();
+        atualizarTotais();
+        if (carrinho.length == 0) {
+          carrinhoVazio();
+        }
       });
     }
   });
@@ -148,7 +128,7 @@ function totalCarrinho(subtotal, frete) {
   $("#total-geral").html(
     total.toLocaleString("pt-BR", { style: "currency", currency: "BRL" })
   );
-    $("#valor-frete").html(
+  $("#valor-frete").html(
     frete.toLocaleString("pt-BR", { style: "currency", currency: "BRL" })
   );
 }
@@ -164,7 +144,7 @@ function carrinhoVazio() {
 
 function definirOsNomesDosIngredientes(listaExtras) {
   if (!listaExtras || listaExtras.length === 0) return "Nenhum";
-  const nomes = listaExtras.map((i) => i.nome);
+  const nomes = listaExtras.map((i) => i.acrecimo.nome);
   return nomes.length === 1
     ? nomes[0]
     : nomes.slice(0, -1).join(", ") + " e " + nomes[nomes.length - 1];

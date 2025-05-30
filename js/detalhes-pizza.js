@@ -5,8 +5,7 @@ var ingredientes = pizzaData.ingredientes; // todos ingredientes possíveis
 var extras = pizzaData.extras; // todos extras possíveis (bebidas, etc)
 var pizzas = pizzaData.pizzas;
 var item = pizzas.find((p) => p.id === idAtual);
-var pedidosGuardados =
-  JSON.parse(localStorage.getItem("pedidos-guardados")) || [];
+var pedidosGuardados = JSON.parse(localStorage.getItem("pedidos-guardados")) || [];
 var multiplicadorTamanho = 1;
 
 // Variáveis do pedido atual
@@ -349,14 +348,71 @@ function addItemNoCarrinho() {
   var cart = JSON.parse(localStorage.getItem("cart-items")) || [];
 
   // Procura se já existe o item no carrinho
-  var indexNoCarrinho = cart.findIndex((c) => c.id === idAtual);
+  var idNoCarrinho = cart.findIndex((c) => c.id === idAtual);
 
-  if (indexNoCarrinho !== -1) {
+  if (idNoCarrinho !== -1) {
     // Atualiza o item no carrinho (substitui o objeto todo)
-    cart[indexNoCarrinho] = pedidoGuardado;
+    var ultimoIndexNoCarrinho = 0;
+    for (i = 0; i < cart.length; i++) {
+
+      if (cart[i].id === idAtual && ultimoIndexNoCarrinho < cart[i].index) {
+        ultimoIndexNoCarrinho = cart[i].index;
+        console.log(ultimoIndexNoCarrinho)
+      }
+    }
+
+    novoItemCart = {
+      id: pedidoGuardado.id,
+      index: cart[idNoCarrinho].index,
+      nome: pedidoGuardado.nome,
+      img: pedidoGuardado.img,
+      ingredientes: pedidoGuardado.pizza,
+      extrasNoPedido: extrasNoPedido,
+      quantidade: 1,
+      tamanho: tamanho,
+      total: total,
+      personalizada: verificarPersonalizacao(),
+      verificaPizza: true,
+    };
+    var existeEsseItem = false;
+
+    for (i = 0; i < cart.length; i++) {
+      if (cart[i].id != cart[idNoCarrinho].id) {
+        continue;
+      }
+      var carIndex = cart[i].index;
+      cart[i].index = 0;
+      novoItemCart.index = 0;
+
+      if (JSON.stringify(novoItemCart) === JSON.stringify(cart[i])) {
+        cart[i] = novoItemCart;
+        existeEsseItem = true;
+        cart[i].index = carIndex;
+        break;
+      }
+      cart[i].index = carIndex;
+    }
+    if (!existeEsseItem) {
+      novoItemCart.index = ultimoIndexNoCarrinho + 1;
+      console.log(novoItemCart.index);
+      cart.push(novoItemCart);
+    }
+
   } else {
     // Adiciona o pedido no carrinho
-    cart.push(pedidoGuardado);
+    cart.push({
+      id: pedidoGuardado.id,
+      index: 1,
+      nome: pedidoGuardado.nome,
+      img: pedidoGuardado.img,
+      ingredientes: pedidoGuardado.pizza,
+      extrasNoPedido: extrasNoPedido,
+      quantidade: 1,
+      tamanho: tamanho,
+      total: total,
+      personalizada: verificarPersonalizacao(),
+      verificaPizza: true,
+    });
   }
 
   // Salva o carrinho atualizado
@@ -410,3 +466,12 @@ $(".tamanhos").on("click", ".tamanho-btn", function () {
 
   alterarTotal();
 });
+
+function verificarPersonalizacao() {
+  if (total - (total_base * multiplicadorTamanho) === 0) {
+    return false;
+  }
+  else {
+    return true;
+  }
+}
