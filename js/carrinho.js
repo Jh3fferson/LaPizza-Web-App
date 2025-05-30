@@ -148,6 +148,9 @@ function totalCarrinho(subtotal, frete) {
   $("#total-geral").html(
     total.toLocaleString("pt-BR", { style: "currency", currency: "BRL" })
   );
+    $("#valor-frete").html(
+    total.toLocaleString("pt-BR", { style: "currency", currency: "BRL" })
+  );
 }
 
 function carrinhoVazio() {
