@@ -14,8 +14,7 @@ if (carrinho.length > 0) {
 // Renderiza os itens do carrinho
 function gerarItemPizzaHTML(itemCarrinho, index, totalFormatado) {
   return `
-    <div class="item-carrinho card" data-index="${index}">
-      <div class="card-content display-flex">
+    <div class="item-carrinho" data-index="${index}">
         <div class="area-img" style="flex-shrink:0;">
           <img src="${itemCarrinho.img}" alt="${itemCarrinho.nome}" style="width:80px; border-radius:6px;" />
         </div>
@@ -37,15 +36,13 @@ function gerarItemPizzaHTML(itemCarrinho, index, totalFormatado) {
               <a class="mais button button-small button-outline" data-index="${index}" href="#">+</a>
             </div>
           </div>
-        </div>
       </div>
     </div>`;
 }
 
 function gerarItemNormalHTML(itemCarrinho, index, totalFormatado) {
   return `
-    <div class="item-carrinho card" data-index="${index}">
-      <div class="card-content display-flex">
+    <div class="item-carrinho" data-index="${index}">
         <div class="area-img" style="flex-shrink:0;">
           <img src="${itemCarrinho.item.img}" alt="${itemCarrinho.item.nome}" style="width:80px; border-radius:6px;" />
         </div>
@@ -64,7 +61,6 @@ function gerarItemNormalHTML(itemCarrinho, index, totalFormatado) {
               <a class="mais button button-small button-outline" data-index="${index}" href="#">+</a>
             </div>
           </div>
-        </div>
       </div>
     </div>`;
 }
@@ -95,6 +91,7 @@ function configurarEventosCarrinho() {
     app.dialog.confirm("Tem certeza que deseja excluir este item?", "Excluir", function () {
       carrinho.splice(index, 1);
       atualizarTotais();
+      carrinhoVazio();
     });
   });
 
@@ -105,7 +102,8 @@ function configurarEventosCarrinho() {
     } else {
       app.dialog.confirm("Deseja excluir este item?", "Excluir", function () {
         carrinho.splice(index, 1);
-        atualizarTotais();
+        atualizarTotais(); //Colocar aqui
+        carrinhoVazio();
       });
     }
   });
@@ -153,12 +151,12 @@ function totalCarrinho(subtotal, frete) {
 }
 
 function carrinhoVazio() {
-  $("#listaCarrinho").empty().html(`
+  $("#lista-carrinho").empty().html(`
     <div class="text-align-center">
-      <img width="300" src="img/empty.gif">
+      <img width="300" src="img/empty.png">
       <br><span style="color:#1d3375;font-size:15px;">Nada por Enquanto</span></br>
     </div>`);
-  $("#totais, #toolbarComprar").addClass("display-none");
+  $(".toolbar-cart").addClass("display-none");
 }
 
 function definirOsNomesDosIngredientes(listaExtras) {

@@ -4,7 +4,7 @@ var app = new Framework7({
   // App root element
   el: "#app",
   // App Name
-  name: "My App",
+  name: "LaPizza",
   // App id
   id: "com.myapp.test",
   // Enable swipe panel
@@ -18,20 +18,53 @@ var app = new Framework7({
   // Add default routes
   routes: [
     {
-      path: "/index/",
-      url: "index.html",
+      path: "/login/",
+      url: "login.html",
       animate: false,
       on: {
         pageBeforeIn: function (event, page) {
           // fazer algo antes da página ser exibida
-          $("#menuprincipal").show("fast");
         },
         pageAfterIn: function (event, page) {
           // fazer algo depois da página ser exibida
         },
         pageInit: function (event, page) {
           // fazer algo quando a página for inicializada
-          app.views.main.router.navigate("/login/");
+          $.getScript("js/login.js");
+        },
+        pageBeforeRemove: function (event, page) {
+          // fazer algo antes da página ser removida do DOM
+        },
+      },
+    },
+    {
+
+      path: "/index/",
+      url: "index.html",
+      animate: false,
+      beforeEnter: function (to) {
+        let pass = localStorage.getItem("pass");
+        pass = pass ? JSON.parse(pass) : false;
+        if (pass === true) {
+          to.resolve();
+        } else {
+          to.reject();
+          app.views.main.router.navigate('/login/');
+        }
+      },
+
+      on: {
+        pageBeforeIn: function (event, page) {
+          // fazer algo antes da página ser exibida
+          $("#menuprincipal").show("fast");
+          app.views.main.router.navigate('/login/');
+        },
+        pageAfterIn: function (event, page) {
+          // fazer algo depois da página ser exibida
+        },
+        pageInit: function (event, page) {
+          // fazer algo quando a página for inicializada
+          // app.views.main.router.navigate("/login/");
           $.getScript("js/script.js");
 
           var swiper = new Swiper(".mySwiper", {
@@ -66,6 +99,17 @@ var app = new Framework7({
       path: "/sobre/",
       url: "sobre.html",
       animate: false,
+      beforeEnter: function (to) {
+        let pass = localStorage.getItem("pass");
+        pass = pass ? JSON.parse(pass) : false;
+        if (pass === true) {
+          to.resolve();
+        } else {
+          to.reject();
+          app.views.main.router.navigate('/login/');
+        }
+      },
+
       on: {
         pageBeforeIn: function (event, page) {
           // fazer algo antes da página ser exibida
@@ -86,6 +130,17 @@ var app = new Framework7({
       path: "/favoritos/",
       url: "favoritos.html",
       animate: false,
+      beforeEnter: function (to) {
+        let pass = localStorage.getItem("pass");
+        pass = pass ? JSON.parse(pass) : false;
+        if (pass === true) {
+          to.resolve();
+        } else {
+          to.reject();
+          app.views.main.router.navigate('/login/');
+        }
+      },
+
       on: {
         pageBeforeIn: function (event, page) {
           // fazer algo antes da página ser exibida
@@ -104,30 +159,20 @@ var app = new Framework7({
     },
 
     {
-      path: "/login/",
-      url: "login.html",
-      animate: false,
-      on: {
-        pageBeforeIn: function (event, page) {
-          // fazer algo antes da página ser exibida
-        },
-        pageAfterIn: function (event, page) {
-          // fazer algo depois da página ser exibida
-        },
-        pageInit: function (event, page) {
-          // fazer algo quando a página for inicializada
-          $.getScript("js/login.js");
-        },
-        pageBeforeRemove: function (event, page) {
-          // fazer algo antes da página ser removida do DOM
-        },
-      },
-    },
-
-    {
       path: "/detalhes-pizza/",
       url: "detalhes-pizza.html",
       animate: false,
+      beforeEnter: function (to) {
+        let pass = localStorage.getItem("pass");
+        pass = pass ? JSON.parse(pass) : false;
+        if (pass === true) {
+          to.resolve();
+        } else {
+          to.reject();
+          app.views.main.router.navigate('/login/');
+        }
+      },
+
       on: {
         pageBeforeIn: function (event, page) {
           // fazer algo antes da página ser exibida
@@ -149,6 +194,17 @@ var app = new Framework7({
       path: "/detalhes-produto/",
       url: "detalhes-produto.html",
       animate: false,
+      beforeEnter: function (to) {
+        let pass = localStorage.getItem("pass");
+        pass = pass ? JSON.parse(pass) : false;
+        if (pass === true) {
+          to.resolve();
+        } else {
+          to.reject();
+          app.views.main.router.navigate('/login/');
+        }
+      },
+
       on: {
         pageBeforeIn: function (event, page) {
           // fazer algo antes da página ser exibida
@@ -173,6 +229,17 @@ var app = new Framework7({
       options: {
         transition: "f7-push",
       },
+      beforeEnter: function (to) {
+        let pass = localStorage.getItem("pass");
+        pass = pass ? JSON.parse(pass) : false;
+        if (pass === true) {
+          to.resolve();
+        } else {
+          to.reject();
+          app.views.main.router.navigate('/login/');
+        }
+      },
+
       on: {
         pageBeforeIn: function (event, page) {
           // fazer algo antes da página ser exibida
@@ -195,9 +262,21 @@ var app = new Framework7({
       path: "/comprar/",
       url: "comprar.html",
       animate: false,
+      beforeEnter: function (to) {
+        let pass = localStorage.getItem("pass");
+        pass = pass ? JSON.parse(pass) : false;
+        if (pass === true) {
+          to.resolve();
+        } else {
+          to.reject();
+          app.views.main.router.navigate('/login/');
+        }
+      },
+
       on: {
         pageBeforeIn: function (event, page) {
           // fazer algo antes da página ser exibida
+          $("#menuprincipal").hide("fast");
         },
         pageAfterIn: function (event, page) {
           // fazer algo depois da página ser exibida

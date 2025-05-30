@@ -13,19 +13,21 @@
 <body>
     <div id="app" class="page">
         <div class="view view-main">
-            <header class="navbar">
-                <div class="navbar-inner">
-                    <div class="left">
-                        <a href="/index/" class="link">
-                            <i class="bx bxs-chevron-left"></i>
-                        </a>
-                    </div>
-                    <div class="title">Carrinho</div>
-                    <div class="right">
-                        <a class="link popover-open" data-popover=".popover-menu"> <i class='bx bx-dots-horizontal-rounded'></i></a>
-                    </div>
-                </div>
-            </header>
+
+            <!-- NAV BAR-->
+            <div class="nav-top-cart">
+                <a class="left link" href="/index/">
+                    <i class="bx bxs-chevron-left"></i>
+                </a>
+                <strong class="title">
+                    <i class="bx bx-cart" id="cart"></i>
+                    Carrinho
+                </strong>
+                <a class="right link popover-open" data-popover=".popover-menu">
+                    <i class='bx bx-dots-horizontal-rounded'></i>
+                </a>
+            </div>
+
             <div class="popover popover-menu">
                 <div class="popover-angle"></div>
                 <div class="popover-inner">
@@ -40,18 +42,30 @@
                 </div>
             </div>
 
+            <div class="toolbar toolbar-bottom toolbar-cart">
+                <div
+                    class="cart-background toolbar toolbar-inner display-flex align-items-center justify-content-center">
+                    <div class="flex-100">
+                        <button class="buy">Comprar</button>
+                    </div>
+                </div>
+            </div>
+
             <!--TAB BAR VALORES-->
-            <div style="margin-bottom: 100px;" style="background: transparent!important;"
-                class="toolbar toolbar-bottom">
-                <div id="resumo-carrinho">
-                    <div>Total dos itens:
-                        <span id="total-itens">R$0,00</span>
+            <div style="margin-bottom: 100px" class="toolbar toolbar-bottom toolbar-cart">
+                <div id="resumo-carrinho"
+                    class="cart-background toolbar toolbar-inner display-flex align-items-center justify-content-center">
+                    <div class="valores bd-bottom">
+                        <span>Subtotal:</span>
+                        <span id="total-itens">R$X.XXX,XX</span>
                     </div>
-                    <div>Frete:
-                        <span id="valor-frete">R$10,00</span>
+                    <div class="valores">
+                        <span>Frete:</span>
+                        <span id="valor-frete">R$XXX,XX</span>
                     </div>
-                    <div style="margin-top:10px; font-weight:bold;">Total geral:
-                        <span id="total-geral">R$0,00</span>
+                    <div class="valores">
+                        <span>Total:</span>
+                        <span id="total-geral">R$X.XXX,XX</span>
                     </div>
                 </div>
             </div>
