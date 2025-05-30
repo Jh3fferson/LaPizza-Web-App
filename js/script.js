@@ -90,7 +90,7 @@ function renderizarProdutos(categoria_numero = 0) {
   });
 
   extras.forEach((extra) => {
-    if (pizza.categoria_numero == categoria_numero || categoria_numero == 0) {
+    if (extra.categoria_numero == categoria_numero || categoria_numero == 0) {
     var productHtml = `
                   <div class="item-card">
                     <a data-id="${extra.id}" href="#" class="item item-extra">
