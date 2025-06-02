@@ -3,56 +3,69 @@ fetch("js/backend.json")
     if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
     return response.json();
   })
-  .then((pizzaData) => {
-    if (!pizzaData.pizzas || !pizzaData.ingredientes) {
+  .then((produtos) => {
+    if (!produtos.pizzas || !produtos.ingredientes) {
       throw new Error("JSON inválido: faltam 'pizzas' ou 'ingredientes'");
     }
-
-    pizzaData.pizzas.forEach((pizza) => {
-      if (!Array.isArray(pizza.ingredientes)) {
-        console.warn(`Ingredientes inválidos para pizza id ${pizza.id}`);
-        pizza.ingredientes = [];
-      }
-
-      pizza.ingredientes = pizza.ingredientes.map((ingredienteId) => {
-        const ingrediente = pizzaData.ingredientes.find(i => i.id === ingredienteId);
-        if (!ingrediente) {
-          console.warn(`Ingrediente id ${ingredienteId} não encontrado para pizza id ${pizza.id}`);
-        }
-        return ingrediente;
-      });
-
-      // Soma o preço dos ingredientes
-      pizza.preco += pizza.ingredientes.reduce(
-        (total, ingrediente) => total + (ingrediente?.preco || 0),
-        0
-      );
-
-    });
-    localStorage.setItem("pizzaData", JSON.stringify(pizzaData));
-    renderizarProdutos();
+    localStorage.setItem("produtos", JSON.stringify(produtos));
+    iniciarIndex();
     console.log("Dados do produto salvo no localStorage.");
   })
   .catch((error) => console.error("Erro ao fazer o fetch dos dados:", error));
 
-function definirOsNomesDosIngredientes(pizza) {
-  const nomes = pizza.ingredientes.map((i) => i.nome);
+var produtos = JSON.parse(localStorage.getItem("produtos")) || [];
 
+//Começa a página index
+function iniciarIndex(categoria_numero = 0) {
+  let ingredientesMap = new Map();
+  produtos.ingredientes.forEach(ing => ingredientesMap.set(ing.id, ing));
+  atualizarPrecos(produtos, ingredientesMap);
+  renderizarProdutos(categoria_numero, produtos, ingredientesMap);
+}
+
+// Função pra listar nomes dos ingredientes
+function definirOsNomesDosIngredientes(pizza, ingredientesMap) {
+  var nomes = [];
+  pizza.ingredientes.forEach(id => {
+    const ingrediente = ingredientesMap.get(id);
+    if (ingrediente) {
+      nomes.push(ingrediente.nome);
+    }
+  });
   if (nomes.length === 0) return "";
   if (nomes.length === 1) return nomes[0];
   return nomes.slice(0, -1).join(", ") + " e " + nomes[nomes.length - 1];
+
 }
 
+// Atualiza os preços de cada pizza, acrescentando o valor dos ingredientes
+function atualizarPrecos(produtos, ingredientesMap) {
+  produtos.pizzas.forEach((pizza) => {
+    pizza.total = pizza.preco_base;
+    pizza.ingredientes.forEach(id => {
+      const ingrediente = ingredientesMap.get(id);
+      if (ingrediente) {
+        pizza.total += ingrediente.preco;
+      }
+    });
+  });
+  localStorage.setItem("produtos", JSON.stringify(produtos));
+}
+
+// seleciona a categoria dos produtos
 $(".categorias").on("click", ".filter-btn", function () {
   let categoria_numero = $(this).data("id");
-  renderizarProdutos(categoria_numero);
+  iniciarIndex(categoria_numero);
+
 });
 
-function renderizarProdutos(categoria_numero = 0) {
+// Modificam o DOM --------------------------------------------------------------------------------------------------------------- Inicio
+
+// renderiza os produtos que serão mostrados no index
+function renderizarProdutos(categoria_numero = 0, produtos, ingredientesMap) {
   $("#produtos").empty();
-  var pizzas = JSON.parse(localStorage.getItem("pizzaData")).pizzas;
-  var produtos = JSON.parse(localStorage.getItem("pizzaData")).extras;
-  pizzas.forEach((pizza) => {
+  // Inicia as pizzas e as filtra
+  produtos.pizzas.forEach((pizza) => {
     if (pizza.categoria_numero == categoria_numero || categoria_numero == 0) {
       var productHtml = `
                   <div class="item-card">
@@ -65,15 +78,12 @@ function renderizarProdutos(categoria_numero = 0) {
                       <div class="nome-preco">
                         <span>${pizza.nome}</span>
                         <span class="bold margin-right">
-                          <i class="preco">${pizza.preco.toLocaleString(
-        "pt-BR",
-        { style: "currency", currency: "BRL" }
-      )} </i>
+                          <i class="preco">${pizza.total.toLocaleString("pt-BR", { style: "currency", currency: "BRL" })} </i>
                         </span>
                       </div>
                       <div class="descricao">
                         <span>
-                         ${definirOsNomesDosIngredientes(pizza)}
+                         ${definirOsNomesDosIngredientes(pizza, ingredientesMap)}
                         </span>
                       </div>
                     </a>
@@ -82,15 +92,16 @@ function renderizarProdutos(categoria_numero = 0) {
       $("#produtos").append(productHtml);
     }
   });
-
+  // Permite ver os detalhes da pizza
   $(".item-pizza").on("click", function () {
     var id = $(this).attr("data-id");
     localStorage.setItem("actual-id-pizza", id);
-    localStorage.setItem("actual-index-pizza", 0);
+    localStorage.setItem("actual-cart", false);
     app.views.main.router.navigate("/detalhes-pizza/");
   });
 
-  produtos.forEach((produto) => {
+  produtos.extras.forEach((produto) => {
+    // Inicia os produtos e os filtra
     if (produto.categoria_numero == categoria_numero || categoria_numero == 0) {
       var productHtml = `
                   <div class="item-card">
@@ -123,10 +134,13 @@ function renderizarProdutos(categoria_numero = 0) {
       $("#produtos").append(productHtml);
     }
   });
-
+  // Permite ver os detalhes do produto
   $(".item-produto").on("click", function () {
     var id = $(this).attr("data-id");
     localStorage.setItem("actual-id-produto", id);
+    localStorage.setItem("actual-cart", false);
     app.views.main.router.navigate("/detalhes-produto/");
   });
 }
+
+// Modificam o DOM --------------------------------------------------------------------------------------------------------------- Fim

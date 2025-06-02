@@ -1,197 +1,402 @@
 // Recuperar dados do localStorage
-var idAtual = parseInt(localStorage.getItem("actual-id-pizza"));
-var indexAtual = parseInt(localStorage.getItem("actual-index-pizza")) || 0;
-var pizzaData = JSON.parse(localStorage.getItem("pizzaData"));
-var ingredientes = pizzaData.ingredientes; // todos ingredientes possíveis
-var extras = pizzaData.extras; // todos extras possíveis (bebidas, etc)
-var pizzas = pizzaData.pizzas;
-var pedidosGuardados = JSON.parse(localStorage.getItem("pedidos-guardados")) || [];
-var cart = JSON.parse(localStorage.getItem("cart-items")) || [];
-var item = pizzas.find((p) => p.id === idAtual);
-var multiplicadorTamanho = 1;
+var dadosArmazenados = {
+  idAtual: parseInt(localStorage.getItem("actual-id-pizza")),
+  actualCart: JSON.parse(localStorage.getItem("actual-cart")) || false,
+  produtos: JSON.parse(localStorage.getItem("produtos")),
+  pedidosGuardadosLocal: JSON.parse(localStorage.getItem("pedidos-guardados")) || [],
+  cart: JSON.parse(localStorage.getItem("cart-items")) || [],
+  favoritos: (JSON.parse(localStorage.getItem("favoritos")) || []).filter(item => item.verificaPizza)
+};
+
+// Coloca os itens chamados do localStorage em um map
+var mapeamentos = {
+  pizzas: new Map(dadosArmazenados.produtos.pizzas.map(piz => [piz.id, piz])),
+  ingredientes: new Map(dadosArmazenados.produtos.ingredientes.map(ing => [ing.id, ing])),
+  extras: new Map(dadosArmazenados.produtos.extras.map(ext => [ext.id, ext])),
+  pedidosGuardados: new Map(dadosArmazenados.pedidosGuardadosLocal.map(pgl => [pgl.id, pgl])),
+  carrinho: new Map(dadosArmazenados.cart.map(c => [`${c.id}-${c.index}`, c])),
+  favoritos: new Map(dadosArmazenados.favoritos.map(f => [`${f.id}-${f.index}`, f]))
+};
 
 // Variáveis do pedido atual
+var item = mapeamentos.pizzas.get(dadosArmazenados.idAtual);
+var multiplicadorTamanho = 1;
 var idpizza;
-var pizza = []; // ingredientes com quantidade
-var extrasNoPedido = []; // extras com quantidade
+var pizza = []; //id dos ingredientes
+var extrasNoPedido = []; // id dos extras, com a quantidade
 var total_base = 0;
 var total = 0;
 var tamanho;
-var pedidoGuardado;
 
-if (indexAtual == 0) {
-  pedidoGuardado = pedidosGuardados.find((pedido) => pedido.id === idAtual);
-}
-else {
-  var cartItem = cart.find(c => c.id === idAtual && c.index == indexAtual);
-  console.log(cartItem)
-  if (cartItem) {
-    pedidoGuardado = {
-      id: idAtual,
-      pizza: cartItem.ingredientes,
-      extrasNoPedido: cartItem.extrasNoPedido,
-      tamanho: cartItem.tamanho,
-      total_base: item.total,
-      total: cartItem.total,
-      img: item.img,
-      nome: item.nome,
-      quantidade: 1,
-      verificaPizza: true
-    };
-    console.log();
-    console.log(pedidoGuardado);
-    pedidosGuardados.push(pedidoGuardado);
-    localStorage.setItem("pedidos-guardados", JSON.stringify(pedidosGuardados));
+var resultado = prepararPedidoGuardado(dadosArmazenados.idAtual, item, mapeamentos.pedidosGuardados);
+idpizza = resultado.idpizza;
+pizza = resultado.pizza;
+extrasNoPedido = resultado.extrasNoPedido;
+total = resultado.total;
+total_base = resultado.total_base;
+tamanho = resultado.tamanho;
+
+// Renderizar as duas listas no HTML
+if (item) {
+  // Dados da pizza
+  $("#imagem-produto").attr("src", item.img);
+  $("#nome-pizza").html(item.nome);
+  $("#preco").html(item.total.toLocaleString("pt-BR", { style: "currency", currency: "BRL" }));
+  $("#descricao-produto").html(definirOsNomesDosIngredientes(item.ingredientes));
+  atualizarTamanhoAtual();
+
+  // Separa ingredientes, em um ingrediente por loop e repassa para cria-lo no DOM
+  mapeamentos.ingredientes.forEach((ingrediente, id) => {
+    renderLista(ingrediente, "#lista-ingredientes", true, true); // Renderiza os ingredientes de acordo com os parametros da pizza ou de pedidosGuardados
+    atualizarBotaoSubIngredientes(id);
+  });
+
+  // Extras (bebidas, etc)
+  mapeamentos.extras.forEach((extra, id) => {
+    extraInfo = obterInfoExtra(id);
+    renderLista(extra, "#lista-extras", !extraInfo.extras);
+    atualizarBotaoSubExtras(id);
+  });
+
+  // Atualizar total
+  adicionarTotal();
+  if (dadosArmazenados.actualCart) {
+    $('button').prop('disabled', true);
+    $('.dots-detalhes').hide();
+    $('.toolbar-detalhes').hide();
   }
-}
 
-if (pedidoGuardado) {
-  idpizza = pedidoGuardado.id;
-  pizza = pedidoGuardado.pizza || [];
-  extrasNoPedido = pedidoGuardado.extrasNoPedido || [];
-  total = pedidoGuardado.total;
-  total_base = pedidoGuardado.total_base;
-  tamanho = pedidoGuardado.tamanho;
 } else {
-  idpizza = idAtual;
-  total_base = item.preco;
-  total = item.preco;
-  // inicializar pizza com os ingredientes originais, cada um com quantidade 1
-  pizza = item.ingredientes.map((ing) => ({ acrecimo: ing, quantidade: 1 }));
-  extrasNoPedido = [];
-  tamanho = "pequeno";
+  console.log("Produto não encontrado!");
 }
 
-// Função para atualizar os inputs da lista de ingredientes
-function atualizarInputsIngredientes() {
-  pizza.forEach((p) => {
-    let dataId = p.acrecimo.id;
-    $(`#lista-ingredientes tr[data-id="${dataId}"] input`).val(p.quantidade);
-  });
+
+// Funções da lista de Ingredientes -------------------------------------------------------------------------------------------------------- Inicio
+
+// Eventos para ingredientes : adicionar na pizza
+$("#lista-ingredientes").on("click", ".add", function () {
+  var dataId = parseInt($(this).closest("tr").data("id"));
+  criarIngrediente(dataId);
+  atualizarPrecos();
+});
+
+// Eventos para ingredientes : retirar da pizza
+$("#lista-ingredientes").on("click", ".sub", function () {
+  var dataId = parseInt($(this).closest("tr").data("id"));
+  retirarIngrediente(dataId);
+  atualizarPrecos();
+});
+
+
+// Responsavel por analisar se o ingrediente, já existe na pizza e se existe descobre se é um original ou um personalizado
+function testarIngrediente(id) {
+  var itemIngredientesSet = new Set(item.ingredientes);
+  var pizzaIngredientesSet = new Set(pizza);
+  return { existe: pizzaIngredientesSet.has(id), original: itemIngredientesSet.has(id) };
 }
 
-// Função para atualizar inputs da lista de extras
-function atualizarInputsExtras() {
-  extrasNoPedido.forEach((e) => {
-    let dataId = e.acrecimo.id;
-    $(`#lista-extras tr[data-id="${dataId}"] input`).val(e.quantidade);
-  });
-}
-
+// Cria o ingrediente dentro da pizza
 function criarIngrediente(id) {
-  var pizzaItem = pizza.find((p) => p.acrecimo.id === id);
-  if (!pizzaItem) {
-    var ingrediente = ingredientes.find((i) => i.id === id);
+  var SituacaoIngrediente = testarIngrediente(id);
+  if (!SituacaoIngrediente.existe) {
+    var ingrediente = mapeamentos.ingredientes.get(id);
     if (ingrediente) {
-      pizzaItem = { acrecimo: ingrediente };
-      pizza.push(pizzaItem);
+      pizza.push(id);
     }
   }
-  atualizarBotaoSubIngredientes(id, pizzaItem, true);
-  return pizzaItem ? 1 : 0;
+  atualizarBotaoSubIngredientes(id);
+  return 1;
 }
 
+// Retira o ingrediente da pizza
 function retirarIngrediente(id) {
-  pizza = pizza.filter((p) => p.acrecimo.id !== id);
-  atualizarBotaoSubIngredientes(id, null, true);
+  pizza = pizza.filter((idIng) => idIng !== id);
+  atualizarBotaoSubIngredientes(id);
   return 0;
 }
 
-// Criar/acrescentar extra (bebida, etc)
-function criarExtra(id, quantidade = 1) {
-  var extraItem = extrasNoPedido.find((e) => e.acrecimo.id === id);
-  if (extraItem) {
-    extraItem.quantidade += quantidade;
-  } else {
-    var extra = extras.find((ex) => ex.id === id);
-    if (extra) {
-      extraItem = { acrecimo: extra, quantidade };
-      extrasNoPedido.push(extraItem);
+// Função pra listar nomes dos ingredientes
+function definirOsNomesDosIngredientes(ingredientesId) {
+  var nomes = [];
+  ingredientesId.forEach(id => {
+    const ingrediente = mapeamentos.ingredientes.get(id);
+    if (ingrediente) {
+      nomes.push(ingrediente.nome);
     }
-  }
-  extrasNoPedido = extrasNoPedido.filter((e) => e.quantidade > 0);
-  atualizarBotaoSubExtras(id, extraItem, false); // false = extra
-  return extraItem ? extraItem.quantidade : 0;
-}
-
-// Retirar extra (diminuir quantidade)
-function retirarExtra(id) {
-  var extraItem = extrasNoPedido.find((e) => e.acrecimo.id === id);
-  if (extraItem) {
-    extraItem.quantidade--;
-    extrasNoPedido = extrasNoPedido.filter((e) => e.quantidade > 0);
-  }
-  atualizarBotaoSubExtras(id, extraItem, false);
-  return extraItem ? extraItem.quantidade : 0;
+  });
+  if (nomes.length === 0) return "";
+  if (nomes.length === 1) return nomes[0];
+  return nomes.slice(0, -1).join(", ") + " e " + nomes[nomes.length - 1];
 }
 
 // Atualizar estado do botão de subtração (-)
 function atualizarBotaoSubIngredientes(id) {
-  let pizzaItem = pizza.find((p) => p.acrecimo.id === id);
-  let botaoSub = $(`#lista-ingredientes tr[data-id="${id}"] .sub`);
-  let indicador = $(
+  var SituacaoIngrediente = testarIngrediente(id);
+  var botaoSub = $(`#lista-ingredientes tr[data-id="${id}"] .sub`);
+  var indicador = $(
     `#lista-ingredientes tr[data-id="${id}"] .status-indicador`
   );
 
-  let isOriginal = item.ingredientes.some((ing) => ing.id === id);
-
-  if (!pizzaItem) {
-    // Se não existe no pedido atual, botão desativado e X
+  // Se não existe no pedido atual, botão desativado e X
+  if (!SituacaoIngrediente.existe) {
     botaoSub.prop("disabled", true);
-    indicador.html(
-      '<i class="bx bx-x" style="color:red; font-size: 24px;"></i>'
-    );
+    indicador.html('<i class="bx bx-x" style="color:red; font-size: 24px;"></i>');
   } else {
-    // Se é original, só desativa se quantidade for 1 (mínimo)
-    if (isOriginal) {
-      botaoSub.prop("disabled", pizzaItem.quantidade <= 1);
-    } else {
-      // Se é extra, pode remover até zero
-      botaoSub.prop("disabled", pizzaItem.quantidade <= 0);
-    }
-
-    // Indicador visual
-    indicador.html(
-      '<i class="bx bx-check" style="color:green; font-size: 24px;"></i>'
-    );
+    botaoSub.prop("disabled", SituacaoIngrediente.original ? true : false);
+    indicador.html('<i class="bx bx-check" style="color:green; font-size: 24px;"></i>');
   }
 }
 
-function atualizarBotaoSubExtras(id, isExtra = false) {
-  let botaoSub;
-  let itemArray;
+// Funções da lista de Ingredientes -------------------------------------------------------------------------------------------------------- Fim
 
-  if (isExtra) {
-    itemArray = extrasNoPedido;
-    botaoSub = $(`#lista-extras tr[data-id="${id}"] .sub`);
+
+
+// Funções da lista de Extras --------------------------------------------------------------------------------------------------------------- Inicio
+
+// Eventos para extras: Adiciona mais um ao pedido
+$("#lista-extras").on("click", ".add", function () {
+  var dataId = parseInt($(this).closest("tr").data("id"));
+  var novaQuantidade = criarExtra(dataId, 1);
+  $(this).closest("tr").find("input").val(novaQuantidade);
+  atualizarPrecos();
+});
+
+// Eventos para extras: Retira 1 ou apaga do pedido
+$("#lista-extras").on("click", ".sub", function () {
+  var dataId = parseInt($(this).closest("tr").data("id"));
+  var novaQuantidade = retirarExtra(dataId);
+  $(this).closest("tr").find("input").val(novaQuantidade);
+  atualizarPrecos();
+});
+
+function obterInfoExtra(id) {
+  const extrasMap = new Map(extrasNoPedido.map(e => [e.id, e.quantidade]));
+  const quantidade = extrasMap.get(id) || 0;
+  return { extras: quantidade > 0, quantidade };
+}
+
+// Função para atualizar inputs da lista de extras
+function atualizarInputsExtras() {
+  extrasNoPedido.forEach((ext) => {
+    $(`#lista-extras tr[data-id="${ext.id}"] input`).val(ext.quantidade);
+  });
+}
+
+// Criar/acrescentar extra (bebida, etc)
+function criarExtra(id, quantidade = 1) {
+  const index = extrasNoPedido.findIndex(extra => extra.id === id);
+  if (index !== -1) {
+    extrasNoPedido[index].quantidade += quantidade;
   } else {
-    itemArray = pizza;
-    botaoSub = $(`#lista-ingredientes tr[data-id="${id}"] .sub`);
+    const extra = mapeamentos.extras.get(id);
+    if (extra) {
+      extrasNoPedido.push({ id: extra.id, quantidade });
+    }
   }
+  atualizarBotaoSubExtras(id);
+  return (index !== -1) ? extrasNoPedido[index].quantidade : quantidade;
+}
 
-  let item = itemArray.find((p) => p.acrecimo.id === id);
 
-  if (!item) {
+// Retirar extra (diminuir quantidade)
+function retirarExtra(id) {
+  const index = extrasNoPedido.findIndex(extra => extra.id === id);
+  if (index !== -1) {
+    extrasNoPedido[index].quantidade--;
+    if (extrasNoPedido[index].quantidade < 1) {
+      $(`#lista-extras tr[data-id="${id}"] input`).val(0);
+      extrasNoPedido.splice(index, 1);
+      atualizarBotaoSubExtras(id);
+      return 0;
+    }
+  }
+  atualizarBotaoSubExtras(id);
+  return (index !== -1) ? extrasNoPedido[index].quantidade : 0;
+}
+
+function atualizarBotaoSubExtras(id) {
+  var botaoSub = $(`#lista-extras tr[data-id="${id}"] .sub`);
+  var extraInfo = obterInfoExtra(id);
+
+  if (!extraInfo.extras) {
     botaoSub.prop("disabled", true);
     return;
-  }
-
-  if (!isExtra) {
-    // Ingrediente original não pode ser reduzido abaixo de 1
-    botaoSub.prop("disabled", item.quantidade <= 1);
   } else {
     // Extras podem zerar
-    botaoSub.prop("disabled", item.quantidade <= 0);
+    botaoSub.prop("disabled", extraInfo.quantidade <= 0);
+  }
+  atualizarInputsExtras();
+}
+
+// Funções da lista de Extras --------------------------------------------------------------------------------------------------------------- Fim
+
+function atualizarPrecos() {
+  var novoPreco = 0;
+  // calcula preço dos ingredientes
+  pizza.forEach(id => {
+    const ingrediente = mapeamentos.ingredientes.get(id);
+    if (ingrediente) {
+      novoPreco += ingrediente.preco;
+    }
+  });
+  var totalExtras = 0;
+  extrasNoPedido.forEach((ext) => {
+    const extra = mapeamentos.extras.get(ext.id);
+    if (extra) {
+      totalExtras += extra.preco * ext.quantidade;
+    }
+  });
+
+  // aplica preço da pizza junto com o multiplicador do tamanho, caso ele não seja undefined
+  total = (typeof multiplicadorTamanho !== "undefined") ? novoPreco * multiplicadorTamanho : novoPreco;
+  total += totalExtras + item.preco_base;
+  guardarpizza();
+  adicionarTotal();
+}
+
+
+// Salvar pedido no localStorage
+function guardarpizza() {
+  const novoPedido = {
+    id: dadosArmazenados.idAtual,
+    pizza: [...pizza],
+    extrasNoPedido: [...extrasNoPedido],
+    tamanho: tamanho,
+    total_base: total_base,
+    total: total,
+    img: item.img,
+    nome: item.nome,
+    quantidade: 1,
+    verificaPizza: true
+  };
+
+  mapeamentos.pedidosGuardados.set(idpizza, novoPedido);
+  const pedidosGuardados = Array.from(mapeamentos.pedidosGuardados.values());
+  localStorage.setItem("pedidos-guardados", JSON.stringify(pedidosGuardados));
+}
+
+
+// Adiciona ao localStorage o item guardado, podendo ser no favoritos ou cart-items
+function addItem(local) {
+  // Atualiza pedidoGuardado se necessário
+  guardarpizza();
+  // Cria o novo item, para determinar se já existe outro igual
+  var novoItem = {
+    id: dadosArmazenados.idAtual,
+    index: 1,
+    nome: item.nome,
+    img: item.img,
+    ingredientes: [...pizza],
+    extrasNoPedido: [...extrasNoPedido], // faz uma cópia (evita mutação acidental)
+    quantidade: 1,
+    tamanho: tamanho,
+    total: total,
+    personalizada: verificarPersonalizacao(),
+    verificaPizza: true
+  };
+  // Define qual é o item a ser guardado
+  var itemModificado = (local === "favoritos") ? mapeamentos.favoritos : mapeamentos.carrinho;
+  var itemLocal = itemModificado.get(`${dadosArmazenados.idAtual}-1`);
+  // Garante que ele existe
+  if (itemLocal) {
+    var ultimoIndexNoCarrinho = 1;
+    var itemTeste = { existe: false, index: 1 };
+    // Verifica se existe outro e igual e senão, descobre qual index da sequência está livre
+    while (itemModificado.has(`${dadosArmazenados.idAtual}-${ultimoIndexNoCarrinho}`)) {
+      if (itensSaoIguais(novoItem, itemModificado.get(`${dadosArmazenados.idAtual}-${ultimoIndexNoCarrinho}`))) {
+        itemTeste.existe = true;
+        itemTeste.index = ultimoIndexNoCarrinho;
+        break;
+      }
+      ultimoIndexNoCarrinho++;
+    }
+    novoItem.index = ultimoIndexNoCarrinho;
+    itemModificado.set(`${dadosArmazenados.idAtual}-${ultimoIndexNoCarrinho}`, novoItem);
+    const novoItemAtualizado = Array.from(itemModificado.values());
+    localStorage.setItem(local, JSON.stringify(novoItemAtualizado));
+
+  } else {
+    // Adiciona o pedido sem alterar nada
+    itemModificado.set(`${dadosArmazenados.idAtual}-${ultimoIndexNoCarrinho}`, novoItem);
+    const novoItemCart = Array.from(itemModificado.values());
+    localStorage.setItem(local, JSON.stringify(novoItemCart));
   }
 }
 
-function renderLista(
-  item,
-  localHTML,
-  subButtonDisabled,
-  isIngrediente = false
-) {
-  let itemHTML = `
+// Ações da página --------------------------------------------------------------------------------------------------------------- Início
+
+$(".tamanhos").on("click", ".tamanho-btn", function () {
+  $(".tamanhos .tamanho-btn").removeClass("selected");
+  $(this).addClass("selected");
+
+  tamanho = $(this).data("tamanho");
+
+  const multiplicadores = {
+    Pequena: 1,
+    Media: 1.4,
+    Grande: 1.7,
+    Gigante: 2
+  };
+
+  multiplicadorTamanho = multiplicadores[tamanho] || 2.5;
+
+  atualizarPrecos();
+});
+
+$(".add-cart").on("click", function () {
+  addItem("cart-items");
+  mapeamentos.pedidosGuardados.delete(idpizza);
+  var toastCenter = app.toast.create({
+    text: `${item.nome} adiocionada ao carrinho`,
+    position: "center",
+    closeTimeout: 2000,
+  });
+
+  toastCenter.open();
+});
+
+$("#favorito").on("click", function () {
+  addItem("favoritos");
+  var toastCenter = app.toast.create({
+    text: `${item.nome} adiocionada aos favoritos`,
+    position: "center",
+    closeTimeout: 2000,
+  });
+
+  toastCenter.open();
+})
+
+$("#reiniciar").on("click", function () {
+  console.log(idpizza)
+  app.dialog.confirm(
+    "Tem certeza que quer reiniciar a pizza?",
+    "Reiniciar Pizza",
+    function () {
+      mapeamentos.pedidosGuardados.delete(idpizza);
+      const pedidosGuardados = Array.from(mapeamentos.pedidosGuardados.values());
+      localStorage.setItem("pedidos-guardados", JSON.stringify(pedidosGuardados));
+      app.views.main.router.refreshPage();
+    }
+  );
+});
+
+// Ações da página --------------------------------------------------------------------------------------------------------------- Fim
+
+// Modificam o DOM --------------------------------------------------------------------------------------------------------------- Inicio
+
+function atualizarTamanhoAtual() {
+  $(".tamanhos .tamanho-btn").removeClass("selected");
+  $(`.${tamanho}`).addClass("selected");
+}
+
+// Função para adicionar total no HTML
+function adicionarTotal() {
+  $("#preco").html(total.toLocaleString("pt-BR", { style: "currency", currency: "BRL" }));
+}
+
+// Cria um item na lista, seja um ingrediente ou um extra
+function renderLista(item, localHTML, subButtonDisabled, isIngrediente = false) {
+  var itemHTML = `
     <tr class="ingrediente-item" data-id="${item.id}">
     <td class="ingrediente-nome">
     <button class="text-bold" disabled>${item.nome}: </button>
@@ -211,293 +416,30 @@ function renderLista(
   $(localHTML).append(itemHTML);
 }
 
-// Renderizar as duas listas no HTML
-if (item) {
-  // Dados da pizza
-  $("#imagem-produto").attr("src", item.img);
-  $("#nome-pizza").html(item.nome);
-  $("#preco").html(
-    item.preco.toLocaleString("pt-BR", { style: "currency", currency: "BRL" })
-  );
-  $("#descricao-produto").html(definirOsNomesDosIngredientes(item));
-  atualizarTamanhoAtual();
+// Modificam o DOM --------------------------------------------------------------------------------------------------------------- Fim
 
-  // Ingredientes (originais + acréscimos)
-  ingredientes.forEach((ingrediente) => {
-    let ingredienteExistente = item.ingredientes.find(
-      (ing) => ing.id === ingrediente.id
-    );
-    let ingredienteNopizza = pizza.find(
-      (pizzaItem) => pizzaItem.acrecimo.id === ingrediente.id
-    );
-    let quantidadeIngrediente = ingredienteNopizza
-      ? ingredienteNopizza.quantidade
-      : 0;
-    let subButtonDisabled =
-      ingredienteExistente && quantidadeIngrediente <= 1 ? "disabled" : "";
 
-    renderLista(ingrediente, "#lista-ingredientes", subButtonDisabled, true);
-    atualizarBotaoSubIngredientes(ingrediente.id);
-  });
+// Verificações --------------------------------------------------------------------------------------------------------------- Inicio
 
-  // Extras (bebidas, etc)
-  extras.forEach((extra) => {
-    let extraNoPedido = extrasNoPedido.find(
-      (ex) => ex.acrecimo.id === extra.id
-    );
-    let quantidadeExtra = extraNoPedido ? extraNoPedido.quantidade : 0;
-    let subButtonDisabled = quantidadeExtra <= 0 ? "disabled" : "";
+// Função pra comparar se dois itens são iguais só nos campos modificáveis pelo usúario
+function itensSaoIguais(itemA, itemB) {
+  // Comparar tamanho
+  if (itemA.tamanho !== itemB.tamanho) return false;
 
-    renderLista(extra, "#lista-extras", subButtonDisabled);
-  });
-
-  // Atualizar inputs e total
-  atualizarInputsIngredientes();
-  atualizarInputsExtras();
-  adicionarTotal();
-  if (indexAtual > 0) {
-    $('button').prop('disabled', true);
-    $('.toolbar-detalhes').hide();
+  // Comparar ingredientes (arrays)
+  if (itemA.ingredientes.length !== itemB.ingredientes.length) return false;
+  for (let i = 0; i < itemA.ingredientes.length; i++) {
+    if (itemA.ingredientes[i] !== itemB.ingredientes[i]) return false;
   }
 
-} else {
-  console.log("Produto não encontrado!");
-}
-
-// Eventos para ingredientes
-$("#lista-ingredientes").on("click", ".add", function () {
-  let dataId = parseInt($(this).closest("tr").data("id"));
-  criarIngrediente(dataId);
-  alterarTotal();
-});
-
-$("#lista-ingredientes").on("click", ".sub", function () {
-  let dataId = parseInt($(this).closest("tr").data("id"));
-  retirarIngrediente(dataId);
-  alterarTotal();
-});
-
-// Eventos para extras
-$("#lista-extras").on("click", ".add", function () {
-  let dataId = parseInt($(this).closest("tr").data("id"));
-  let novaQuantidade = criarExtra(dataId, 1);
-  $(this).closest("tr").find("input").val(novaQuantidade);
-  alterarTotal();
-});
-
-$("#lista-extras").on("click", ".sub", function () {
-  let dataId = parseInt($(this).closest("tr").data("id"));
-  let novaQuantidade = retirarExtra(dataId);
-  $(this).closest("tr").find("input").val(novaQuantidade);
-  alterarTotal();
-});
-
-// Função para adicionar total no HTML
-function adicionarTotal() {
-  $("#preco").html(
-    total.toLocaleString("pt-BR", { style: "currency", currency: "BRL" })
-  );
-}
-
-// Função para alterar total somando ingredientes + extras
-function alterarTotal() {
-  // calcula preço dos ingredientes extras (além dos originais)
-  let totalIngredientesExtras = 0;
-  pizza.forEach((p) => {
-    const isOriginal = item.ingredientes.some(
-      (ing) => ing.id === p.acrecimo.id
-    );
-    if (!isOriginal) {
-      totalIngredientesExtras += p.acrecimo.preco || 0;
-    }
-  });
-
-  // preço base da pizza + ingredientes extras
-  let precoPizza = total_base + totalIngredientesExtras;
-
-  // aplica multiplicador do tamanho só na pizza
-  if (typeof multiplicadorTamanho !== "undefined") {
-    precoPizza = precoPizza * multiplicadorTamanho;
+  // Comparar extras (arrays)
+  if (itemA.extrasNoPedido.length !== itemB.extrasNoPedido.length) return false;
+  for (let i = 0; i < itemA.extrasNoPedido.length; i++) {
+    if (itemA.extrasNoPedido[i] !== itemB.extrasNoPedido[i]) return false;
   }
 
-  // soma o preço dos extras (bebidas, etc) sem multiplicador
-  let totalExtras = 0;
-  extrasNoPedido.forEach((e) => {
-    totalExtras += (e.acrecimo.preco || 0) * e.quantidade;
-  });
-
-  // total final = pizza com multiplicador + extras sem multiplicador
-  total = precoPizza + totalExtras;
-
-  guardarpizza();
-  adicionarTotal();
+  return true;
 }
-
-// Salvar pedido no localStorage
-function guardarpizza() {
-  let index = pedidosGuardados.findIndex((pedido) => pedido.id === idAtual);
-  if (index !== -1) {
-    pedidosGuardados[index].pizza = pizza;
-    pedidosGuardados[index].extrasNoPedido = extrasNoPedido;
-    pedidosGuardados[index].total_base = total_base;
-    pedidosGuardados[index].total = total;
-    pedidosGuardados[index].tamanho = tamanho;
-    pedidosGuardados[index].img = item.img;
-    pedidosGuardados[index].nome = item.nome;
-    pedidoGuardado = pedidosGuardados[index];
-  } else {
-    pedidoGuardado = {
-      id: idAtual,
-      pizza: pizza,
-      extrasNoPedido: extrasNoPedido,
-      tamanho: tamanho,
-      total_base: total_base,
-      total: total,
-      img: item.img,
-      nome: item.nome,
-      quantidade: 1,
-      verificaPizza: true
-    };
-    pedidosGuardados.push(pedidoGuardado);
-  }
-  localStorage.setItem("pedidos-guardados", JSON.stringify(pedidosGuardados));
-}
-
-// Função pra listar nomes dos ingredientes originais (para descrição)
-function definirOsNomesDosIngredientes(pizza) {
-  const nomes = pizza.ingredientes.map((i) => i.nome);
-  if (nomes.length === 0) return "";
-  if (nomes.length === 1) return nomes[0];
-  return nomes.slice(0, -1).join(", ") + " e " + nomes[nomes.length - 1];
-}
-
-// Botão adicionar ao carrinho
-function addItemNoCarrinho() {
-  // Atualiza pedidoGuardado com guardarpizza se necessário
-  guardarpizza();
-
-  // Pega o carrinho do localStorage ou inicia um array vazio
-  cart = JSON.parse(localStorage.getItem("cart-items")) || [];
-
-  // Procura se já existe o item no carrinho
-  var idNoCarrinho = cart.findIndex((c) => c.id === idAtual);
-
-  if (idNoCarrinho !== -1) {
-    // Atualiza o item no carrinho (substitui o objeto todo)
-    var ultimoIndexNoCarrinho = 0;
-    for (i = 0; i < cart.length; i++) {
-
-      if (cart[i].id === idAtual && ultimoIndexNoCarrinho < cart[i].index) {
-        ultimoIndexNoCarrinho = cart[i].index;
-        console.log(ultimoIndexNoCarrinho)
-      }
-    }
-
-    novoItemCart = {
-      id: pedidoGuardado.id,
-      index: cart[idNoCarrinho].index,
-      nome: pedidoGuardado.nome,
-      img: pedidoGuardado.img,
-      ingredientes: pedidoGuardado.pizza,
-      extrasNoPedido: extrasNoPedido,
-      quantidade: 1,
-      tamanho: tamanho,
-      total: total,
-      personalizada: verificarPersonalizacao(),
-      verificaPizza: true,
-    };
-    var existeEsseItem = false;
-
-    for (i = 0; i < cart.length; i++) {
-      if (cart[i].id != cart[idNoCarrinho].id) {
-        continue;
-      }
-      var carIndex = cart[i].index;
-      cart[i].index = 0;
-      novoItemCart.index = 0;
-
-      if (JSON.stringify(novoItemCart) === JSON.stringify(cart[i])) {
-        cart[i] = novoItemCart;
-        existeEsseItem = true;
-        cart[i].index = carIndex;
-        break;
-      }
-      cart[i].index = carIndex;
-    }
-    if (!existeEsseItem) {
-      novoItemCart.index = ultimoIndexNoCarrinho + 1;
-      console.log(novoItemCart.index);
-      cart.push(novoItemCart);
-    }
-
-  } else {
-    // Adiciona o pedido no carrinho
-    cart.push({
-      id: pedidoGuardado.id,
-      index: 1,
-      nome: pedidoGuardado.nome,
-      img: pedidoGuardado.img,
-      ingredientes: pedidoGuardado.pizza,
-      extrasNoPedido: extrasNoPedido,
-      quantidade: 1,
-      tamanho: tamanho,
-      total: total,
-      personalizada: verificarPersonalizacao(),
-      verificaPizza: true,
-    });
-  }
-
-  // Salva o carrinho atualizado
-  localStorage.setItem("cart-items", JSON.stringify(cart));
-
-  // Se desejar, remova o pedido dos pedidosGuardados
-  if (Array.isArray(pedidosGuardados)) {
-    let index = pedidosGuardados.findIndex((pedido) => pedido.id === idAtual);
-    if (index !== -1) {
-      pedidosGuardados.splice(index, 1);
-    }
-  }
-
-  // Salva pedidosGuardados atualizados, se for necessário
-  localStorage.setItem("pedidos-guardados", JSON.stringify(pedidosGuardados));
-}
-
-$(".add-cart").on("click", function () {
-  addItemNoCarrinho();
-  var toastCenter = app.toast.create({
-    text: `${item.nome} adiocionada ao carrinho`,
-    position: "center",
-    closeTimeout: 2000,
-  });
-
-  toastCenter.open();
-});
-
-$(".tamanhos").on("click", ".tamanho-btn", function () {
-  $(".tamanhos .tamanho-btn").removeClass("selected");
-  $(this).addClass("selected");
-  tamanho = $(this).data("tamanho");
-
-  switch (tamanho) {
-    case "Pequena":
-      multiplicadorTamanho = 1;
-      break;
-    case "Media":
-      multiplicadorTamanho = 1.4;
-      break;
-    case "Grande":
-      multiplicadorTamanho = 1.7;
-      break;
-    case "Gigante":
-      multiplicadorTamanho = 2;
-      break;
-    default:
-      multiplicadorTamanho = 2.5;
-      break;
-  }
-
-  alterarTotal();
-});
 
 function verificarPersonalizacao() {
   if (total - (total_base * multiplicadorTamanho) === 0) {
@@ -508,7 +450,29 @@ function verificarPersonalizacao() {
   }
 }
 
-function atualizarTamanhoAtual() {
-  $(".tamanhos .tamanho-btn").removeClass("selected");
-  $(`.${tamanho}`).addClass("selected");
+// Verificações --------------------------------------------------------------------------------------------------------------- Fim
+
+
+// Função para iniciar um pedido já existente ou um novo
+function prepararPedidoGuardado(idAtual, item, pedidosGuardados) {
+  const pedidoGuardado = pedidosGuardados.get(idAtual);
+  if (pedidoGuardado) {
+    return {
+      idpizza: pedidoGuardado.id,
+      pizza: [...(pedidoGuardado.pizza || [])],
+      extrasNoPedido: [...(pedidoGuardado.extrasNoPedido || [])],
+      total: pedidoGuardado.total,
+      total_base: pedidoGuardado.total_base,
+      tamanho: pedidoGuardado.tamanho
+    };
+  } else {
+    return {
+      idpizza: idAtual,
+      pizza: [...item.ingredientes],
+      extrasNoPedido: [],
+      total: item.total,
+      total_base: item.total,
+      tamanho: "Pequena"
+    };
+  }
 }

@@ -1,11 +1,20 @@
-//RECUPERAR ID LOCALSTORAGE
+var dadosArmazenados = {
+  idAtual: parseInt(localStorage.getItem("actual-id-pizza")),
+  actualCart: JSON.parse(localStorage.getItem("actual-cart")) || false,
+  produtos: JSON.parse(localStorage.getItem("produtos")),
+  carrinho: JSON.parse(localStorage.getItem("cart-items")) || [],
+  favoritos: JSON.parse(localStorage.getItem("favoritos")) || []
+};
+var mapeamentos = {
+  produtos: new Map(dadosArmazenados.produtos.extras.map(ext => [ext.id, ext])),
+  carrinho: new Map(dadosArmazenados.carrinho.map(c => [`${c.id}-${c.index}`, c])),
+  favoritos: new Map(dadosArmazenados.favoritos.map(f => [`${f.id}-${f.index}`, f]))
+};
 
-var id = parseInt(localStorage.getItem("actual-id-produto"));
-var produtos = JSON.parse(localStorage.getItem("pizzaData")).extras;
-var item = produtos.find((produto) => produto.id === id);
+var id = dadosArmazenados.idAtual;
+var item = mapeamentos.produtos.get(id);
 
 if (item) {
-  console.log("Produto encontrado:", item);
   //ALIMENTAR VALORES ITENS
   $("#imagem-produto").attr("src", item.img);
   $("#nome-produto").html(item.nome);
@@ -15,55 +24,57 @@ if (item) {
   $("#origem").html(item.pais_origem);
   $("#teor").html(item.teor_alcoolico);
   $("#tamanho").html(item.tamanho);
-  updateColor(item.id);
 
 
   $("#preco-produto").html(
     item.preco.toLocaleString("pt-BR", { style: "currency", currency: "BRL" })
   );
+  if (dadosArmazenados.actualCart) {
+    $('button').prop('disabled', true);
+    $('.dots-detalhes').hide();
+    $('.toolbar-detalhes').hide();
+  }
+  else {
+    $('button').prop('disabled', false);
+    $('.dots-detalhes').show();
+    $('.toolbar-detalhes').show();
+  }
 } else {
   console.log("Produto não encontrado");
 }
-
-var carrinho = JSON.parse(localStorage.getItem("cart-items")) || [];
+// mudar
 //FUNÇÂO PARA ADICIONAR AO CARRINHO
-function adicionarCarrinho(item, quantidade) {
-  var itemCarrinho;
-  if (!item.verificaPizza) {
-    itemCarrinho = carrinho.find((c) => !c.verificaPizza && c.item.id === item.id);
-  } else {
-    // Para pizzas, pode comparar pelo id e também por personalização, se quiser
-    itemCarrinho = carrinho.find(
-      (c) =>
-        c.verificaPizza &&
-        c.id === item.id &&
-        JSON.stringify(c.pizza) === JSON.stringify(item.pizza) &&
-        c.tamanho === item.tamanho
-    );
-  }
+// mudar e juntar com o adicionarFavorito
+function adicionarItem(local, quantidade) {
+  var itemLocal = (local === "favoritos") ? mapeamentos.favoritos : mapeamentos.carrinho;
+  var novoItem = itemLocal.get(`${id}-0`);
 
-  if (itemCarrinho) {
-    itemCarrinho.quantidade += quantidade;
-    itemCarrinho.total_item = itemCarrinho.quantidade * item.preco;
+  if (novoItem) {
+    novoItem.quantidade += quantidade;
+    novoItem.total_item = novoItem.quantidade * item.preco;
+    itemLocal.set(`${id}-0`, novoItem);
   } else {
-    carrinho.push({
+    var novoItemCriado = {
       id: item.id,
+      index: 0,
       nome: item.nome,
       img: item.img,
       quantidade: quantidade,
       tamanho: item.tamanho,
       total: quantidade * item.preco,
       verificaPizza: false,
-    });
+    };
+    itemLocal.set(`${id}-0`, novoItemCriado);
   }
   //ATUALIZAR O LOCALSTORAGE DE CARRINHO
-  localStorage.setItem("cart-items", JSON.stringify(carrinho));
+  const novosItens = Array.from(itemLocal.values());
+  localStorage.setItem(local, JSON.stringify(novosItens));
 
 }
 
 //BOTÃO DE ADICIONAR AO CARRINHO
 $(".add-cart").on("click", function () {
-  adicionarCarrinho(item, 1);
+  adicionarItem("cart-items", 1);
   var toastCenter = app.toast.create({
     text: `${item.nome} adiocionado ao carrinho`,
     position: "center",
@@ -73,45 +84,13 @@ $(".add-cart").on("click", function () {
   toastCenter.open();
 });
 
-$(".favorito-btn").on("click", function () {
-  adicionarFavorito(item);
-});
-
-function adicionarFavorito(itemF) {
-  var favorito = JSON.parse(localStorage.getItem("favoritos")) || [];
-  var itemFavorito = favorito.find((f) => f.item.id === itemF.id);
-  var texto;
-  if (!itemFavorito) {
-    favorito.push({
-      item: item,
-    });
-    texto = "adicionado aos favoritos";
-
-  } else {
-    favorito = favorito.filter(f => f.item.id !== itemF.id);
-    texto = "retirado dos favoritos";
-  }
-
+$("#favorito-btn").on("click", function () {
+  adicionarItem("favoritos", 1);
   var toastCenter = app.toast.create({
-    text: `${item.nome} ${texto}`,
+    text: `${item.nome} adiocionado aos favoritos`,
     position: "center",
     closeTimeout: 2000,
   });
+
   toastCenter.open();
-  //ATUALIZAR O LOCALSTORAGE DE FAVORITO
-  app.views.main.router.refreshPage();
-  localStorage.setItem("favoritos", JSON.stringify(favorito));
-}
-
-function updateColor(id) {
-  console.log(id)
-  var favorito = JSON.parse(localStorage.getItem("favoritos")) || [];
-  var itemFavorito = favorito.find((f) => f.item.id === id);
-  if (itemFavorito) {
-    $('.favorito').css("color", "red");
-  }
-  else {
-    $('.favorito').css("color", "#547aec");
-  }
-
-}
+});

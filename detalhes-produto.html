@@ -30,7 +30,7 @@
             <!-- Initial Page, "data-name" contains page name -->
             <div data-name="detalhes" class="page color-theme-blue">
                 <!-- TAB BAR-->
-                <div class="toolbar toolbar-bottom">
+                <div class="toolbar toolbar-bottom toolbar-detalhes">
                     <div class="toolbar-inner display-flex align-items-center justify-content-center">
                         <div class="flex-40 text-align-center">
                             <h3 id="preco-produto" class="pricing no-padding no-margin">R$X.XXX,XX</h3>
@@ -49,11 +49,11 @@
                             <a href="/index/">
                                 <i class='bx bxs-chevron-left link'></i>
                             </a>
-                            <a href="#">
+                            <a href="#" id="favorito-btn">
                                 <i class='bx bx-bookmark-plus link'></i>
                             </a>
-                            <a href="#">
-                                <i class='bx bx-share-al linkt'></i>
+                            <a lass="popover-open link dots-detalhes" data-popover=".popover-menu">
+                                <i class='bx bx-dots-horizontal-rounded'></i>
                             </a>
                         </div>
                         <div class="display-flex justify-content-center align-items-center flex-direction-column">
@@ -77,19 +77,25 @@
                         </div>
                         <table id="lista-caracteristicas" data-active="false">
                             <tr class="caracteristicas-produtos">
-                                <td class="caracteristica-nome"><button class="text-bold" disabled>Origem: </button> </td>
+                                <td class="caracteristica-nome"><button class="text-bold" disabled>Origem: </button>
+                                </td>
                                 <td class="linha"></td>
-                                <td class="caracteristica-valor"><button class="text-bold" disabled id="origem"></button></td>
+                                <td class="caracteristica-valor"><button class="text-bold" disabled
+                                        id="origem"></button></td>
                             </tr>
                             <tr class="caracteristicas-produtos">
-                                <td class="caracteristica-nome"><button class="text-bold" disabled>Teor Alcoolico: </button> </td>
+                                <td class="caracteristica-nome"><button class="text-bold" disabled>Teor Alcoolico:
+                                    </button> </td>
                                 <td class="linha"></td>
-                                <td class="caracteristica-valor"><button class="text-bold" disabled id="teor"></button></td>
+                                <td class="caracteristica-valor"><button class="text-bold" disabled id="teor"></button>
+                                </td>
                             </tr>
                             <tr class="caracteristicas-produtos">
-                                <td class="caracteristica-nome"><button class="text-bold" disabled>Tamanho: </button> </td>
+                                <td class="caracteristica-nome"><button class="text-bold" disabled>Tamanho: </button>
+                                </td>
                                 <td class="linha"></td>
-                                <td class="caracteristica-valor"><button class="text-bold" disabled id="tamanho"></button></td>
+                                <td class="caracteristica-valor"><button class="text-bold" disabled
+                                        id="tamanho"></button></td>
                             </tr>
                         </table>
                     </div>
